@@ -1,8 +1,0 @@
-version: "Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)"
-options: "cc8b001f30340eeb55054a36cd38b6d94d9ecabe7633daf1df6759e166589f80"
-build_start_time: [1690201554, 303246021]
-build_end_time: [1690201567, 563026905]
-inputs:
-  "/Users/sungjin122517/Desktop/hkust/clovi_template/macos/Flutter/GeneratedPluginRegistrant.swift": [1690201545, 275135517]
-  "/Users/sungjin122517/Desktop/hkust/clovi_template/macos/Runner/AppDelegate.swift": [1671141040, 0]
-  "/Users/sungjin122517/Desktop/hkust/clovi_template/macos/Runner/MainFlutterWindow.swift": [1671141040, 0]
