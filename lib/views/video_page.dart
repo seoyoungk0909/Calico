@@ -68,8 +68,11 @@ class _VideoPageState extends State<VideoPage> {
       onHorizontalDragEnd: (details) {
         if (details.velocity.pixelsPerSecond.dx < 0) {
           // ypController!.pause();
-          Navigator.pushNamed(context, 'item_info',
-              arguments: {'controller': video.ypController});
+          Navigator.pushNamed(context, 'item_info', arguments: {
+            'controller': video.ypController,
+            'items': video.items,
+            'modelName': video.modelName,
+          });
         }
       },
       child: YoutubePlayer(
