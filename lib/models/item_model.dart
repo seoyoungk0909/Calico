@@ -22,7 +22,7 @@ class Item {
   String imageURL =
       'https://image.msscdn.net/images/goods_img/20220303/2396645/2396645_4_500.jpg';
   int officialPrice = 59000;
-  int time = 0;
+  // int time = 0;
 
   Item({
     String? itemName,
@@ -33,7 +33,6 @@ class Item {
     String? itemColour,
     String? itemImageURL,
     int? itemOfficialPrice,
-    int? itemTime,
   }) {
     name = itemName ?? name;
     brand = itemBrand ?? brand;
@@ -43,6 +42,5 @@ class Item {
     colour = itemColour ?? colour;
     imageURL = itemImageURL ?? imageURL;
     officialPrice = itemOfficialPrice ?? officialPrice;
-    time = itemTime ?? time;
   }
 }
