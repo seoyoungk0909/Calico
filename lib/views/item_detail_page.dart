@@ -72,7 +72,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
               child: Padding(
                 padding: const EdgeInsets.only(right: 17.0),
                 child: Text(
-                  item.officialPrice.toString() + ' 원',
+                  '${item.officialPrice} 원',
                   style: const TextStyle(
                       height: 2,
                       fontStyle: FontStyle.normal,
@@ -96,7 +96,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                   border: Border.all(color: Colors.grey.shade200)),
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                const Row(children: [
+                Row(children: const [
                   Padding(padding: EdgeInsets.only(top: 50)),
                   Padding(padding: EdgeInsets.only(left: 40)),
                   Text(
@@ -132,7 +132,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                                 color: Colors.black),
                           ),
                           const SizedBox(width: 200),
-                          Text(item.officialPrice.toString() + '원',
+                          Text('${item.officialPrice}원',
                               style: const TextStyle(
                                   fontSize: 15,
                                   fontStyle: FontStyle.normal,
