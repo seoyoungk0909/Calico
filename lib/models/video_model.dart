@@ -1,8 +1,6 @@
 import 'package:clovi_template/models/time_shop_items_model.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import 'item_model.dart';
-
 class Video {
   String url = 'https://www.youtube.com/shorts/sArvwOFrXGA';
   String modelName = 'Calico';
@@ -12,7 +10,7 @@ class Video {
     initialVideoId: YoutubePlayer.convertUrlToId(url)!,
     flags: const YoutubePlayerFlags(
       autoPlay: true,
-      mute: true,
+      mute: false,
       disableDragSeek: true,
       loop: true,
     ),

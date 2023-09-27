@@ -1,4 +1,3 @@
-import 'package:clovi_template/controllers/video_controller.dart';
 import 'package:clovi_template/models/item_model.dart';
 import 'package:clovi_template/models/time_shop_items_model.dart';
 import 'package:clovi_template/models/video_model.dart';
@@ -109,7 +108,35 @@ class _VideoPageState extends State<VideoPage> {
     videoTimestamps: [tsi3.startTime, tsi4.startTime, tsi44.startTime],
   );
 
-  late List<Video> videos = [video1, video2];
+  late Video video3 = Video(
+    videoURL: 'https://www.youtube.com/shorts/49V5aWetW2M',
+    videoModelName: 'Whu.s',
+    videoTimeShopItemsList: [tsi1, tsi2, tsi22],
+    videoTimestamps: [tsi1.startTime, tsi2.startTime, tsi22.startTime],
+  );
+
+  late Video video4 = Video(
+    videoURL: 'https://www.youtube.com/shorts/AoNaaiJhjqc',
+    videoModelName: 'Whu.s',
+    videoTimeShopItemsList: [tsi3, tsi4, tsi44],
+    videoTimestamps: [tsi3.startTime, tsi4.startTime, tsi44.startTime],
+  );
+
+  late Video video5 = Video(
+    videoURL: 'https://www.youtube.com/shorts/1zZuCWra-mI',
+    videoModelName: 'Whu.s',
+    videoTimeShopItemsList: [tsi1, tsi2, tsi22],
+    videoTimestamps: [tsi1.startTime, tsi2.startTime, tsi22.startTime],
+  );
+
+  late Video video6 = Video(
+    videoURL: 'https://www.youtube.com/shorts/hHx4Qx6pi6Y',
+    videoModelName: 'Whu.s',
+    videoTimeShopItemsList: [tsi3, tsi4],
+    videoTimestamps: [tsi3.startTime, tsi4.startTime],
+  );
+
+  late List<Video> videos = [video1, video2, video3, video4, video5, video6];
 
   int currentIndex = 0;
 
@@ -128,12 +155,6 @@ class _VideoPageState extends State<VideoPage> {
       onHorizontalDragEnd: (details) {
         if (details.velocity.pixelsPerSecond.dx < 0) {
           directToItemInfoPage(video);
-          // video.ypController.pause();
-          // Navigator.pushNamed(context, 'item_info', arguments: {
-          //   'controller': video.ypController,
-          //   'items': video.items,
-          //   'modelName': video.modelName,
-          // });
         }
       },
       child: YoutubePlayer(
@@ -141,6 +162,13 @@ class _VideoPageState extends State<VideoPage> {
         showVideoProgressIndicator: true,
       ),
     );
+  }
+
+  bool shouldRefresh = false;
+  void refreshWidget() {
+    setState(() {
+      shouldRefresh = !shouldRefresh;
+    });
   }
 
   @override
@@ -161,14 +189,17 @@ class _VideoPageState extends State<VideoPage> {
                 setState(
                   () {
                     currentIndex = index;
+                    refreshWidget();
                   },
                 )
               },
             ),
           ),
           TimeControlWidget(
-              ypController: videos[currentIndex].ypController,
-              timestamps: videos[currentIndex].timestamps)
+            ypController: videos[currentIndex].ypController,
+            video: videos[currentIndex],
+            key: UniqueKey(),
+          )
         ],
       ),
     );
