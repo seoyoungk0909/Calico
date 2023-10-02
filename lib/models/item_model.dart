@@ -1,46 +1,86 @@
-const List ITEM_PARENT_CATEGORY = [
-  'Top',
-  'Outer',
-  'Bottom',
-  'Shoes',
-  'Accessories'
-];
-
-const List ITEM_CHILD_CATEGORY = [
-  'Knitwear/Sweater',
-  'Collar T-shirt',
-  'Hoody T-shirt',
-];
+import 'package:clovi_template/models/shops_model.dart';
 
 class Item {
-  String name = 'Item';
-  String brand = 'Brand';
-  String parentCategory = 'Top';
-  String childCategory = 'Knitwear/Sweater';
-  String size = 'M';
-  String colour = 'Green';
-  String imageURL =
-      'https://image.msscdn.net/images/goods_img/20220303/2396645/2396645_4_500.jpg';
-  int officialPrice = 59000;
-  // int time = 0;
+  int? id;
+  String? name;
+  int? order;
+  String? itemImgUrl;
+  String? color;
+  String? size;
+  String? brand;
+  List<String>? colorList;
+  List<String>? sizeList;
+  List<Shops>? shops;
+  List<Item>? childItems;
 
-  Item({
-    String? itemName,
-    String? itemBrand,
-    String? itemParentCategory,
-    String? itemChildCategory,
-    String? itemSize,
-    String? itemColour,
-    String? itemImageURL,
-    int? itemOfficialPrice,
-  }) {
-    name = itemName ?? name;
-    brand = itemBrand ?? brand;
-    parentCategory = itemParentCategory ?? parentCategory;
-    childCategory = itemChildCategory ?? childCategory;
-    size = itemSize ?? size;
-    colour = itemColour ?? colour;
-    imageURL = itemImageURL ?? imageURL;
-    officialPrice = itemOfficialPrice ?? officialPrice;
+  Item(
+      {this.id,
+      this.name,
+      this.order,
+      this.itemImgUrl,
+      this.color,
+      this.size,
+      this.brand,
+      this.colorList,
+      this.sizeList,
+      this.shops,
+      this.childItems});
+
+  Item.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    order = json['order'];
+    itemImgUrl = json['itemImgUrl'];
+    color = json['color'];
+    size = json['size'];
+    brand = json['brand'];
+    if (json['colorList'] != null) {
+      colorList = [];
+      json['colorList'].forEach((v) {
+        colorList!.add(v);
+      });
+    }
+    if (json['sizeList'] != null) {
+      sizeList = [];
+      json['sizeList'].forEach((v) {
+        sizeList!.add(v);
+      });
+    }
+    if (json['shops'] != null) {
+      shops = <Shops>[];
+      json['shops'].forEach((v) {
+        shops!.add(Shops.fromJson(v));
+      });
+    }
+    if (json['childItems'] != null) {
+      childItems = <Item>[];
+      json['childItems'].forEach((v) {
+        childItems!.add(Item.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['order'] = order;
+    data['itemImgUrl'] = itemImgUrl;
+    data['color'] = color;
+    data['size'] = size;
+    data['brand'] = brand;
+    if (colorList != null) {
+      data['colorList'] = colorList;
+    }
+    if (sizeList != null) {
+      data['sizeList'] = sizeList;
+    }
+    if (shops != null) {
+      data['shops'] = shops!.map((v) => v.toJson()).toList();
+    }
+    if (childItems != null) {
+      data['childItems'] = childItems!.map((v) => v.toJson()).toList();
+    }
+    return data;
   }
 }
