@@ -1,10 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:clovi_template/models/item_element_model.dart';
 import 'package:flutter/material.dart';
-import 'package:clovi_template/models/item_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-Widget videoItemUI(
-    BuildContext context, Item item, YoutubePlayerController ypController) {
+Widget videoItemUI(BuildContext context, ItemElement itemElement,
+    YoutubePlayerController ypController) {
   Future<void> _launchURL(String url) async {
     Uri uri;
     if (!url.startsWith("https")) {
@@ -21,7 +22,7 @@ Widget videoItemUI(
   return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, 'item_detail', arguments: {
-          'item': item,
+          'itemElement': itemElement,
         });
       },
       child: Container(
@@ -40,12 +41,29 @@ Widget videoItemUI(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image.network(
-              item.imageURL,
-              width: 100,
-              height: 100,
-              fit: BoxFit.cover,
-            ),
+            // Image.network(
+            //   itemElement.item!.itemImgUrl!,
+            //   width: 100,
+            //   height: 100,
+            //   fit: BoxFit.cover,
+            //   errorBuilder: (context, error, stackTrace) {
+            //     return Icon(Icons.error);
+            //   },
+            // ),
+            CachedNetworkImage(
+                imageUrl: itemElement.item!.itemImgUrl!,
+                height: 100,
+                width: 100,
+                fit: BoxFit.cover,
+                errorWidget: (context, url, error) {
+                  return Container(
+                    color: Colors.black12,
+                    child: const Icon(
+                      Icons.error,
+                      color: Colors.red,
+                    ),
+                  );
+                }),
             Container(
                 width: 150,
                 padding: const EdgeInsets.only(left: 20),
@@ -53,8 +71,9 @@ Widget videoItemUI(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('[${item.brand}] ${item.name}'),
-                    Text('${item.size} 착용'),
+                    Text(
+                        '[${itemElement.item!.brand}] ${itemElement.item!.name}'),
+                    Text('${itemElement.item!.size} 착용'),
                   ],
                 )),
             Container(
@@ -63,7 +82,7 @@ Widget videoItemUI(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('${item.officialPrice}원'),
+                    Text('${itemElement.item!.shops![0].price}원'),
                     Container(
                       margin: const EdgeInsets.only(top: 5),
                       decoration: BoxDecoration(
