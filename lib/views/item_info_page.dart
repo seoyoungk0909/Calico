@@ -1,5 +1,6 @@
 import 'package:clovi_template/models/item_element_model.dart';
 import 'package:clovi_template/models/time_shop_items_model.dart';
+import 'package:clovi_template/models/model_model.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'components/item_info_ui.dart';
@@ -11,10 +12,10 @@ class ItemInfoPage extends StatefulWidget {
 }
 
 class _ItemInfoPageState extends State<ItemInfoPage> {
-  Widget itemView(List<ItemElement> items, String modelName,
+  Widget itemView(List<ItemElement> items, Model model,
       YoutubePlayerController ypController) {
     return Column(children: [
-      itemHeader(context, modelName),
+      itemHeader(context, model),
       ListView.builder(
         shrinkWrap: true,
         itemCount: items.length,
@@ -28,8 +29,8 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
     ]);
   }
 
-  Widget timeItemView(List<TimeShopItemLists> timeShopItemsList,
-      String modelName, YoutubePlayerController ypController) {
+  Widget timeItemView(List<TimeShopItemLists> timeShopItemsList, Model model,
+      YoutubePlayerController ypController) {
     for (int i = 0; i < timeShopItemsList.length; i++) {
       TimeShopItemLists currentItem = timeShopItemsList[i];
       TimeShopItemLists? nextItem =
@@ -38,7 +39,7 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
       if (currentItem.times!.start! <= ypController.value.position.inSeconds &&
           (nextItem == null ||
               nextItem.times!.start! > ypController.value.position.inSeconds)) {
-        return itemView(currentItem.items!, modelName, ypController);
+        return itemView(currentItem.items!, model, ypController);
       }
     }
     return Container();
@@ -51,15 +52,15 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
     YoutubePlayerController ypController = arguments['controller'];
     // List<Item> items = arguments['items'];
     List<TimeShopItemLists> timeShopItemList = arguments['timeShopItems'];
-    String modelName = arguments['modelName'];
+    Model model = arguments['model'];
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Item Info Page'),
       ),
       body: GestureDetector(
-        // child: itemView(items, modelName, ypController),
-        child: timeItemView(timeShopItemList, modelName, ypController),
+        // child: itemView(items, model, ypController),
+        child: timeItemView(timeShopItemList, model, ypController),
         onHorizontalDragEnd: (details) {
           if (details.velocity.pixelsPerSecond.dx > 0) {
             Navigator.pop(context);
