@@ -42,7 +42,7 @@ class _VideoPageState extends State<VideoPage> {
     await Navigator.pushNamed(context, 'item_info', arguments: {
       'controller': video.ypController,
       'timeShopItems': video.data?.timeShopItemLists,
-      'modelName': video.data!.timeShopItemLists![0].model!.name,
+      'model': video.data!.timeShopItemLists![0].model!,
     });
     video.ypController?.play();
   }
