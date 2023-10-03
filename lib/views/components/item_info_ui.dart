@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clovi_template/models/item_element_model.dart';
 import 'package:clovi_template/models/model_model.dart';
@@ -30,28 +32,13 @@ Widget videoItemUI(BuildContext context, ItemElement itemElement,
       child: Container(
         decoration: const BoxDecoration(
           border: Border(
-            left: BorderSide(
-                width: 10.0, color: Color.fromARGB(255, 233, 233, 233)),
-            right: BorderSide(
-                width: 10.0, color: Color.fromARGB(255, 233, 233, 233)),
             top: BorderSide(
-                width: 0.0, color: Color.fromARGB(255, 233, 233, 233)),
-            bottom: BorderSide(
-                width: 9.0, color: Color.fromARGB(255, 233, 233, 233)),
+                width: 1.0, color: Color.fromARGB(255, 233, 233, 233)),
           ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Image.network(
-            //   itemElement.item!.itemImgUrl!,
-            //   width: 100,
-            //   height: 100,
-            //   fit: BoxFit.cover,
-            //   errorBuilder: (context, error, stackTrace) {
-            //     return Icon(Icons.error);
-            //   },
-            // ),
             Padding(
               padding: const EdgeInsets.all(8),
               child: CachedNetworkImage(
@@ -153,14 +140,96 @@ Widget videoItemUI(BuildContext context, ItemElement itemElement,
       ));
 }
 
+Widget allItemUI(BuildContext context, ItemElement itemElement,
+    YoutubePlayerController ypController) {
+  return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, 'item_detail', arguments: {
+          'itemElement': itemElement,
+        });
+      },
+      child: Container(
+        margin: const EdgeInsetsDirectional.fromSTEB(5, 10, 5, 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CachedNetworkImage(
+                imageUrl: itemElement.item!.itemImgUrl!,
+                height: 220,
+                // width: 180,
+                fit: BoxFit.cover,
+                errorWidget: (context, url, error) {
+                  return Container(
+                    width: 200,
+                    color: Colors.black12,
+                    child: const Icon(
+                      Icons.error,
+                      color: Colors.red,
+                    ),
+                  );
+                }),
+            Container(
+                width: 180,
+                height: 100,
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          '${itemElement.item!.brand}',
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: Text(
+                        '${itemElement.item!.name}',
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 114, 114, 114),
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: RichText(
+                        text: TextSpan(
+                          style: DefaultTextStyle.of(context).style,
+                          children: [
+                            TextSpan(
+                              text: NumberFormat('#,###')
+                                  .format(itemElement.item!.shops![0].price),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            const TextSpan(text: '원'),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                )),
+          ],
+        ),
+      ));
+}
+
 Widget itemHeader(BuildContext context, Model model) {
   return Container(
-    decoration: const BoxDecoration(
-      border: Border(
-        bottom:
-            BorderSide(width: 9.0, color: Color.fromARGB(255, 233, 233, 233)),
-      ),
-    ),
+    decoration: const BoxDecoration(),
     padding: const EdgeInsetsDirectional.all(15),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

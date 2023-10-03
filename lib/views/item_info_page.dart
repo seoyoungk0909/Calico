@@ -18,12 +18,54 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
       itemHeader(context, model),
       ListView.builder(
         shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         itemCount: items.length,
         itemBuilder: (
           BuildContext context,
           int i,
         ) {
           return videoItemUI(context, items[i], ypController);
+        },
+      ),
+      Container(
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+                width: 1.0, color: Color.fromARGB(255, 177, 177, 177)),
+          ),
+        ),
+      )
+    ]);
+  }
+
+  Widget allItemView(
+    List<TimeShopItemLists> timeShopItemsList,
+    YoutubePlayerController ypController,
+  ) {
+    List<ItemElement> allItems =
+        timeShopItemsList.expand((item) => item.items!).toList();
+
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Container(
+          padding: EdgeInsets.only(left: 20),
+          child: const Text(
+            '영상에 나온 옷들',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
+          )),
+      GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: allItems.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.545,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 0),
+        itemBuilder: (BuildContext context, int index) {
+          return allItemUI(context, allItems[index], ypController);
         },
       ),
     ]);
@@ -50,7 +92,6 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     YoutubePlayerController ypController = arguments['controller'];
-    // List<Item> items = arguments['items'];
     List<TimeShopItemLists> timeShopItemList = arguments['timeShopItems'];
     Model model = arguments['model'];
 
@@ -59,8 +100,28 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
         title: Text('Item Info Page'),
       ),
       body: GestureDetector(
-        // child: itemView(items, model, ypController),
-        child: timeItemView(timeShopItemList, model, ypController),
+        child: SingleChildScrollView(
+            child: Column(children: [
+          ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: 1,
+            itemBuilder: (BuildContext context, int i) {
+              return timeItemView(timeShopItemList, model, ypController);
+            },
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: 1,
+            itemBuilder: (
+              BuildContext context,
+              int i,
+            ) {
+              return allItemView(timeShopItemList, ypController);
+            },
+          ),
+        ])),
         onHorizontalDragEnd: (details) {
           if (details.velocity.pixelsPerSecond.dx > 0) {
             Navigator.pop(context);
