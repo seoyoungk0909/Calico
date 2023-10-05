@@ -1,6 +1,8 @@
+import 'dart:math';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clovi_template/models/item_element_model.dart';
 import 'package:clovi_template/models/model_model.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -39,21 +41,19 @@ Widget videoItemUI(BuildContext context, ItemElement itemElement,
           children: [
             Padding(
               padding: const EdgeInsets.all(8),
-              child: ExtendedImage.network(
-                itemElement.item!.itemImgUrl!,
-                width: 75,
-                fit: BoxFit.cover,
-                loadStateChanged: (ExtendedImageState state) {
-                  switch (state.extendedImageLoadState) {
-                    case LoadState.loading:
-                      return null;
-                    case LoadState.completed:
-                      return null;
-                    case LoadState.failed:
-                      return const Icon(Icons.error);
-                  }
-                },
-              ),
+              child: CachedNetworkImage(
+                  imageUrl: itemElement.item!.itemImgUrl!,
+                  width: 75,
+                  fit: BoxFit.cover,
+                  errorWidget: (context, url, error) {
+                    return Container(
+                      color: Colors.black12,
+                      child: const Icon(
+                        Icons.error,
+                        color: Colors.red,
+                      ),
+                    );
+                  }),
             ),
             Container(
                 width: 170,
@@ -154,22 +154,21 @@ Widget allItemUI(BuildContext context, ItemElement itemElement,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ExtendedImage.network(
-              itemElement.item!.itemImgUrl!,
-              height: 220,
-              width: 180,
-              fit: BoxFit.cover,
-              loadStateChanged: (ExtendedImageState state) {
-                switch (state.extendedImageLoadState) {
-                  case LoadState.loading:
-                    return null;
-                  case LoadState.completed:
-                    return null;
-                  case LoadState.failed:
-                    return const Icon(Icons.error);
-                }
-              },
-            ),
+            CachedNetworkImage(
+                imageUrl: itemElement.item!.itemImgUrl!,
+                height: 220,
+                // width: 180,
+                fit: BoxFit.cover,
+                errorWidget: (context, url, error) {
+                  return Container(
+                    width: 200,
+                    color: Colors.black12,
+                    child: const Icon(
+                      Icons.error,
+                      color: Colors.red,
+                    ),
+                  );
+                }),
             Container(
                 width: 180,
                 height: 100,
