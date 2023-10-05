@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clovi_template/models/item_element_model.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:extended_image/extended_image.dart';
 
 class ItemDetailPage extends StatefulWidget {
   const ItemDetailPage({super.key});
@@ -23,27 +23,22 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
         ),
         body: Column(
           children: [
-            // Image.network(
-            //   itemElement.item!.itemImgUrl!,
-            //   height: 400,
-            //   width: 800,
-            //   errorBuilder: (context, error, stackTrace) {
-            //     return Icon(Icons.error);
-            //   },
-            // ),
-            CachedNetworkImage(
-                imageUrl: itemElement.item!.itemImgUrl!,
-                height: 400,
-                width: 800,
-                errorWidget: (context, url, error) {
-                  return Container(
-                    color: Colors.black12,
-                    child: const Icon(
-                      Icons.error,
-                      color: Colors.red,
-                    ),
-                  );
-                }),
+            ExtendedImage.network(
+              itemElement.item!.itemImgUrl!,
+              height: 400,
+              width: 800,
+              // fit: BoxFit.cover,
+              loadStateChanged: (ExtendedImageState state) {
+                switch (state.extendedImageLoadState) {
+                  case LoadState.loading:
+                    return null;
+                  case LoadState.completed:
+                    return null;
+                  case LoadState.failed:
+                    return const Icon(Icons.error);
+                }
+              },
+            ),
             const Divider(
               color: Colors.black,
               height: 25,
