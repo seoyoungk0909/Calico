@@ -1,20 +1,11 @@
-import 'package:clovi_template/views/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'views/video_page.dart';
+import 'views/home_page.dart';
 import 'views/item_detail_page.dart';
 import 'views/item_info_page.dart';
 
-Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  FlutterNativeSplash.removeAfter(initiailization);
-
+void main() {
   runApp(const MyApp());
-}
-
-Future initiailization(BuildContext? context) async {
-  await Future.delayed(const Duration(seconds: 3));
 }
 
 class MyApp extends StatelessWidget {
