@@ -150,7 +150,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                             Padding(
-                              padding: EdgeInsets.only(left: 2, right: 5),
+                              padding: const EdgeInsets.only(left: 2, right: 5),
                               child: ExtendedImage.network(
                                 itemElement.item!.shops![0].logoUrl!,
                                 width: 20,
