@@ -42,8 +42,18 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
     List<TimeShopItemLists> timeShopItemsList,
     YoutubePlayerController ypController,
   ) {
-    List<ItemElement> allItems =
-        timeShopItemsList.expand((item) => item.items!).toList();
+    // filter out duplicating items
+    List<ItemElement> allItems = [];
+    Set<int> uniqueItemIds = {};
+    timeShopItemsList.forEach((item) {
+      item.items?.forEach((subItem) {
+        int itemId = subItem.item?.id ?? 0;
+        if (!uniqueItemIds.contains(itemId)) {
+          uniqueItemIds.add(itemId);
+          allItems.add(subItem);
+        }
+      });
+    });
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
