@@ -3,7 +3,6 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:clovi_template/models/shops_model.dart';
 
 class ItemDetailPage extends StatefulWidget {
   const ItemDetailPage({super.key});
@@ -20,11 +19,11 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
     ItemElement itemElement = arguments['itemElement'];
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Item Detail Page'),
-        ),
-        body: SingleChildScrollView(
-            child: Column(
+      appBar: AppBar(
+        title: const Text('Item Detail Page'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
           children: [
             ExtendedImage.network(
               itemElement.item!.itemImgUrl!,
@@ -137,27 +136,29 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                       ),
                     ],
                   ),
-                  Column(children: [
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        side: BorderSide(width: 5, color: Colors.grey.shade300),
-                        textStyle: const TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () =>
-                          launchUrlString(itemElement.item!.shops![0].shopUrl!),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 2, right: 5),
-                              child: ExtendedImage.network(
-                                itemElement.item!.shops![0].logoUrl!,
-                                width: 20,
-                                fit: BoxFit.cover,
+                  Column(
+                    children: [
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          side:
+                              BorderSide(width: 5, color: Colors.grey.shade300),
+                          textStyle: const TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () => launchUrlString(
+                            itemElement.item!.shops![0].shopUrl!),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 2, right: 5),
+                                child: ExtendedImage.network(
+                                  itemElement.item!.shops![0].logoUrl!,
+                                  width: 20,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-
-                            Container(
+                              Container(
                                 width: 255,
                                 padding: const EdgeInsets.only(
                                     left: 5, top: 5, bottom: 5),
@@ -167,24 +168,33 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                                       fontSize: 15,
                                       fontStyle: FontStyle.normal,
                                       color: Colors.black),
-                                )),
-                            Container(
+                                ),
+                              ),
+                              Container(
                                 width: 80,
                                 child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                        '${NumberFormat('#,### ').format(itemElement.item!.shops![0].price)}원',
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            fontStyle: FontStyle.normal,
-                                            color: Colors.black))))
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    '${NumberFormat('#,### ').format(itemElement.item!.shops![0].price)}원',
+                                    style: const TextStyle(
+                                        fontSize: 15,
+                                        fontStyle: FontStyle.normal,
+                                        color: Colors.black),
+                                  ),
+                                ),
+                              )
+                            ]
                             // const Padding(padding: EdgeInsets.only(right: 20)),
-                    )
-                  ]),
+                            ),
+                      )
+                    ],
+                  ),
                 ],
               ),
             ),
           ],
-        )));
+        ),
+      ),
+    );
   }
 }
