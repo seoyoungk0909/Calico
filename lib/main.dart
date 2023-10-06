@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'views/video_page.dart';
-import 'views/home_page.dart';
+// import 'views/home_page.dart';
 import 'views/item_detail_page.dart';
 import 'views/item_info_page.dart';
 
@@ -18,11 +18,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        'video': (context) => VideoPage(),
+        // 'video': (context) => VideoPage(),
         'item_info': (context) => ItemInfoPage(),
         'item_detail': (context) => ItemDetailPage()
       },
-      home: HomePage(),
+      home: const VideoPage(),
     );
   }
 }
