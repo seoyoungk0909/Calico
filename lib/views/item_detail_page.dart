@@ -144,7 +144,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                         textStyle: const TextStyle(fontSize: 20),
                       ),
                       onPressed: () =>
-                          launchUrlString('https://www.naver.com/'),
+                          launchUrlString(itemElement.item!.shops![0].shopUrl!),
                       child: Container(
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -163,7 +163,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                                 padding: const EdgeInsets.only(
                                     left: 5, top: 5, bottom: 5),
                                 child: Text(
-                                  itemElement.item!.brand!,
+                                  itemElement.item!.shops![0].name!,
                                   style: const TextStyle(
                                       fontSize: 15,
                                       fontStyle: FontStyle.normal,
