@@ -1,7 +1,9 @@
 import 'package:clovi_template/models/item_element_model.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:clovi_template/models/shops_model.dart';
 
 class ItemDetailPage extends StatefulWidget {
   const ItemDetailPage({super.key});
@@ -21,7 +23,8 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
         appBar: AppBar(
           title: const Text('Item Detail Page'),
         ),
-        body: Column(
+        body: SingleChildScrollView(
+            child: Column(
           children: [
             ExtendedImage.network(
               itemElement.item!.itemImgUrl!,
@@ -49,29 +52,30 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.only(left: 17.0),
+                padding: const EdgeInsets.only(left: 17.0),
                 child: Text(
                   itemElement.item!.brand!,
                   style: const TextStyle(
                       decoration: TextDecoration.underline,
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w800,
-                      fontSize: 19,
+                      fontSize: 17,
                       color: Colors.black),
                 ),
               ),
             ),
-            Align(
+            Container(
               alignment: Alignment.centerLeft,
+              width: 550,
               child: Padding(
-                padding: const EdgeInsets.only(left: 17.0),
+                padding: const EdgeInsets.only(left: 17.0, right: 17.0),
                 child: Text(
                   itemElement.item!.name!,
                   style: const TextStyle(
                       height: 2,
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w800,
-                      fontSize: 25,
+                      fontSize: 22,
                       color: Colors.black),
                 ),
               ),
@@ -88,12 +92,12 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
               child: Padding(
                 padding: const EdgeInsets.only(right: 17.0),
                 child: Text(
-                  '${itemElement.item!.shops![0].price} 원',
+                  '${NumberFormat('#,### ').format(itemElement.item!.shops![0].price)}원',
                   style: const TextStyle(
                       height: 2,
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w800,
-                      fontSize: 25,
+                      fontSize: 20,
                       color: Colors.black),
                 ),
               ),
@@ -109,14 +113,13 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
               width: 390,
               height: 100,
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade200)),
+                  border: Border.all(color: Colors.grey.shade300)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const Row(
                     children: [
-                      Padding(padding: EdgeInsets.only(top: 50)),
-                      Padding(padding: EdgeInsets.only(left: 40)),
+                      Padding(padding: EdgeInsets.only(top: 50, left: 40)),
                       Text(
                         "판매처",
                         style: TextStyle(
@@ -124,7 +127,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                             fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.w800),
                       ),
-                      SizedBox(width: 220),
+                      SizedBox(width: 250),
                       Text(
                         "가격",
                         style: TextStyle(
@@ -134,37 +137,56 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                       ),
                     ],
                   ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      side: BorderSide(width: 5, color: Colors.grey.shade300),
-                      textStyle: const TextStyle(fontSize: 20),
-                    ),
-                    onPressed: () => launchUrlString('https://www.naver.com/'),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(children: [
-                            const Padding(padding: EdgeInsets.only(left: 30)),
-                            Text(
-                              itemElement.item!.brand!,
-                              style: const TextStyle(
-                                  fontSize: 15,
-                                  fontStyle: FontStyle.normal,
-                                  color: Colors.black),
+                  Column(children: [
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        side: BorderSide(width: 5, color: Colors.grey.shade300),
+                        textStyle: const TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () =>
+                          launchUrlString('https://www.naver.com/'),
+                      child: Container(
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 2, right: 5),
+                              child: ExtendedImage.network(
+                                itemElement.item!.shops![0].logoUrl!,
+                                width: 20,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                            const SizedBox(width: 200),
-                            Text('${itemElement.item!.shops![0].price}원',
-                                style: const TextStyle(
-                                    fontSize: 15,
-                                    fontStyle: FontStyle.normal,
-                                    color: Colors.black))
-                          ])
-                        ]),
-                  ),
+
+                            Container(
+                                width: 255,
+                                padding: const EdgeInsets.only(
+                                    left: 5, top: 5, bottom: 5),
+                                child: Text(
+                                  itemElement.item!.brand!,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontStyle: FontStyle.normal,
+                                      color: Colors.black),
+                                )),
+                            Container(
+                                width: 80,
+                                child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                        '${NumberFormat('#,### ').format(itemElement.item!.shops![0].price)}원',
+                                        style: const TextStyle(
+                                            fontSize: 15,
+                                            fontStyle: FontStyle.normal,
+                                            color: Colors.black))))
+                            // const Padding(padding: EdgeInsets.only(right: 20)),
+                          ])),
+                    )
+                  ]),
                 ],
               ),
             ),
           ],
-        ));
+        )));
   }
 }
