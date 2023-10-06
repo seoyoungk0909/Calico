@@ -17,7 +17,24 @@ Widget videoItemUI(BuildContext context, ItemElement itemElement,
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
-      throw "Can not launch $url";
+      // throw "Can not launch $url";
+      showDialog(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Cannot launch $url'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -118,7 +135,7 @@ Widget videoItemUI(BuildContext context, ItemElement itemElement,
                         color: Colors.transparent,
                         child: InkWell(
                           onTap: () {
-                            _launchURL('www.naver.com');
+                            _launchURL(itemElement.item!.shops![0].shopUrl!);
                           },
                           child: const Padding(
                             padding:
