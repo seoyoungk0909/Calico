@@ -3,7 +3,6 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:clovi_template/models/shops_model.dart';
 
 class ItemDetailPage extends StatefulWidget {
   const ItemDetailPage({super.key});
