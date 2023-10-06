@@ -145,10 +145,9 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                       ),
                       onPressed: () =>
                           launchUrlString(itemElement.item!.shops![0].shopUrl!),
-                      child: Container(
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 2, right: 5),
                               child: ExtendedImage.network(
@@ -180,7 +179,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                                             fontStyle: FontStyle.normal,
                                             color: Colors.black))))
                             // const Padding(padding: EdgeInsets.only(right: 20)),
-                          ])),
+                          ]),
                     )
                   ]),
                 ],
