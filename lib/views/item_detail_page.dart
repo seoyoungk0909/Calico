@@ -59,7 +59,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                       decoration: TextDecoration.underline,
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w800,
-                      fontSize: 16,
+                      fontSize: 17,
                       color: Colors.black),
                 ),
               ),
