@@ -1,12 +1,18 @@
+import 'dart:convert';
+
 import 'package:clovi_template/models/item_element_model.dart';
 import 'package:clovi_template/models/time_shop_items_model.dart';
+import 'package:clovi_template/views/time_control_widget.dart';
+import 'package:clovi_template/models/video_model.dart';
 import 'package:clovi_template/models/model_model.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'components/item_info_ui.dart';
+import 'package:http/http.dart' as http;
 
 class ItemInfoPage extends StatefulWidget {
   const ItemInfoPage({super.key});
+
   @override
   State<ItemInfoPage> createState() => _ItemInfoPageState();
 }
@@ -98,46 +104,78 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     YoutubePlayerController ypController = arguments['controller'];
     List<TimeShopItemLists> timeShopItemList = arguments['timeShopItems'];
     Model model = arguments['model'];
+    Video video = arguments['video'];
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Item Info Page'),
-      ),
-      body: GestureDetector(
-        child: SingleChildScrollView(
-            child: Column(children: [
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 1,
-            itemBuilder: (BuildContext context, int i) {
-              return timeItemView(timeShopItemList, model, ypController);
-            },
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 1,
-            itemBuilder: (
-              BuildContext context,
-              int i,
-            ) {
-              return allItemView(timeShopItemList, ypController);
-            },
-          ),
-        ])),
-        onHorizontalDragEnd: (details) {
-          if (details.velocity.pixelsPerSecond.dx > 0) {
-            Navigator.pop(context);
-          }
-        },
-      ),
-    );
+        appBar: AppBar(
+          title: Text('Item Info Page'),
+        ),
+        body: GestureDetector(
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                    child: Column(children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 1,
+                    itemBuilder: (BuildContext context, int i) {
+                      return timeItemView(
+                          timeShopItemList, model, ypController);
+                    },
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 1,
+                    itemBuilder: (
+                      BuildContext context,
+                      int i,
+                    ) {
+                      return allItemView(timeShopItemList, ypController);
+                    },
+                  ),
+                ])),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TimeControlWidget(
+                      ypController: video.ypController!,
+                      video: video,
+                      // ypController: snapshot.data!.ypController!,
+                      // video: snapshot.data!,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            onHorizontalDragEnd: (details) {
+              if (details.velocity.pixelsPerSecond.dx > 0) {
+                Navigator.pop(context);
+              }
+            }));
+    // };
+
+    // else {
+    //   return Center(
+    //       child: CircularProgressIndicator(
+    //           color: Theme.of(context).primaryColor));
+    // }
   }
+
+  //         ),
+  //   );
+  // }
 }

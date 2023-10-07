@@ -43,6 +43,7 @@ class _VideoPageState extends State<VideoPage> {
       'controller': video.ypController,
       'timeShopItems': video.data?.timeShopItemLists,
       'model': video.data!.timeShopItemLists![0].model!,
+      'video': video,
     });
     video.ypController?.play();
   }

@@ -66,6 +66,7 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -105,6 +106,7 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
     Duration rewind(Duration currentPosition) => timestamps.lastWhere(
         (element) => currentPosition > element + Duration(seconds: 2),
         orElse: (() => Duration.zero));
+    print('showpreviousitem ${widget.ypController.metadata.title}');
     await goToPosition(rewind);
   }
 
@@ -113,6 +115,7 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
         timestamps.firstWhere((position) => currentPosition < position,
             orElse: (() =>
                 widget.ypController.metadata.duration - Duration(seconds: 1)));
+    print('shownextitem ${widget.ypController.metadata.title}');
 
     await goToPosition(forward);
   }
