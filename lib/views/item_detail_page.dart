@@ -156,6 +156,16 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                                   itemElement.item!.shops![0].logoUrl!,
                                   width: 20,
                                   fit: BoxFit.cover,
+                                  loadStateChanged: (ExtendedImageState state) {
+                                    switch (state.extendedImageLoadState) {
+                                      case LoadState.loading:
+                                        return null;
+                                      case LoadState.completed:
+                                        return null;
+                                      case LoadState.failed:
+                                        return const Icon(Icons.error);
+                                    }
+                                  },
                                 ),
                               ),
                               Container(
