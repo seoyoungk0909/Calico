@@ -180,7 +180,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                                       color: Colors.black),
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 width: 80,
                                 child: Align(
                                   alignment: Alignment.centerRight,
