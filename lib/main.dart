@@ -1,3 +1,4 @@
+// import 'package:clovi_template/views/home_page.dart';
 import 'package:flutter/material.dart';
 import 'views/video_page.dart';
 // import 'views/home_page.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        // 'video': (context) => VideoPage(),
+        'video': (context) => VideoPage(),
         'item_info': (context) => ItemInfoPage(),
         'item_detail': (context) => ItemDetailPage()
       },
