@@ -32,6 +32,7 @@ class Video {
         mute: false,
         disableDragSeek: true,
         loop: true,
+        hideThumbnail: true,
       ),
     );
   }
