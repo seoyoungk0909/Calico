@@ -183,7 +183,18 @@ Widget allItemUI(BuildContext context, ItemElement itemElement,
                   case LoadState.completed:
                     return null;
                   case LoadState.failed:
-                    return const Icon(Icons.error);
+                    return Container(
+                        height: 220,
+                        width: 180,
+                        color: Colors.white,
+                        child: IconButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, 'item_detail',
+                                  arguments: {
+                                    'itemElement': itemElement,
+                                  });
+                            },
+                            icon: const Icon(Icons.error, size: 20)));
                 }
               },
             ),
