@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:clovi_template/models/video_model.dart';
 // import 'package:clovi_template/services/remote_service.dart';
@@ -56,7 +57,7 @@ class _VideoPageState extends State<VideoPage> {
       var data = jsonDecode(utf8.decode(response.bodyBytes));
       videos.add(Video.fromJson(data));
     }
-
+    log("getVideosAPI");
     return videos;
   }
 
@@ -66,7 +67,8 @@ class _VideoPageState extends State<VideoPage> {
   void initState() {
     super.initState();
     // video = getVideoApi();
-    videos = getVideoApis(urls);
+    // videos = getVideoApis(urls);
+    log("initState");
   }
 
   void directToItemInfoPage(Video video) async {
@@ -127,13 +129,15 @@ class _VideoPageState extends State<VideoPage> {
                 return videoWidget(snapshot.data![index]);
               },
               controller: PreloadPageController(initialPage: 0),
-              // onPageChanged: (value) {
-              //   setState(
-              //     () {
-              //       // snapshot.data![value].ypController!.play();
-              //     },
-              //   );
-              // },
+              onPageChanged: (value) {
+                // setState(
+                //   () {
+                //     // snapshot.data![value].ypController!.play();
+                //   },
+                // );
+                snapshot.data![value].ypController!.play();
+                // currentIndex = value;
+              },
             );
           } else {
             return const Scaffold(
@@ -150,80 +154,3 @@ class _VideoPageState extends State<VideoPage> {
     );
   }
 }
-
-// temporary items
-// Item item1 = Item(
-//   itemName: 'knit',
-//   itemBrand: 'Zara',
-//   itemSize: 'M',
-//   itemImageURL:
-//       'https://static.zara.net/photos///2023/I/0/2/p/2621/406/700/2/w/1126/2621406700_6_1_1.jpg?ts=1688039025940',
-//   itemOfficialPrice: 100000,
-// );
-// Item item2 = Item(
-//   itemName: 'jeans',
-//   itemBrand: 'Zara',
-//   itemSize: 'M',
-//   itemImageURL:
-//       'https://static.zara.net/photos///2023/I/0/2/p/8062/405/406/2/w/1126/8062405406_6_1_1.jpg?ts=1688122815082',
-//   itemOfficialPrice: 80000,
-// );
-// Item item3 = Item(
-//   itemName: 'jacket',
-//   itemBrand: 'AMI',
-//   itemSize: '95',
-//   itemImageURL:
-//       'https://image.msscdn.net/images/goods_img/20200305/1337097/1337097_16941460640029_500.jpg',
-//   itemOfficialPrice: 260000,
-// );
-// Item item4 = Item(
-//   itemName: 'pants',
-//   itemBrand: 'MUSINSA',
-//   itemSize: 'L',
-//   itemImageURL:
-//       'https://image.msscdn.net/images/goods_img/20190201/947201/947201_3_500.jpg',
-//   itemOfficialPrice: 70000,
-// );
-
-// late TimeShopItems tsi1 = TimeShopItems(
-//   itemsItems: [item1],
-//   itemsStartTime: Duration(seconds: 0),
-// );
-
-// late TimeShopItems tsi2 = TimeShopItems(
-//   itemsItems: [item2],
-//   itemsStartTime: Duration(seconds: 10),
-// );
-
-// late TimeShopItems tsi3 = TimeShopItems(
-//   itemsItems: [item3],
-//   itemsStartTime: Duration(seconds: 0),
-// );
-
-// late TimeShopItems tsi4 = TimeShopItems(
-//   itemsItems: [item4],
-//   itemsStartTime: Duration(seconds: 13),
-// );
-
-// late Video video1 = Video(
-//   videoURL: 'https://www.youtube.com/shorts/2YQloQR2Cd8',
-//   videoModelName: 'Whu.s',
-//   videoTimeShopItemsList: [tsi1, tsi2],
-//   videoTimestamps: [tsi1.startTime, tsi2.startTime],
-// );
-
-// late Video video2 = Video(
-//   videoURL: 'https://www.youtube.com/shorts/BtBkz9qek0M',
-//   videoModelName: 'Whu.s',
-//   videoTimeShopItemsList: [tsi3, tsi4],
-//   videoTimestamps: [tsi3.startTime, tsi4.startTime],
-// );
-
-// late Video video3 = Video(
-//   videoURL: 'https://www.youtube.com/shorts/49V5aWetW2M',
-//   videoModelName: 'Whu.s',
-//   videoTimeShopItemsList: [tsi1, tsi2],
-//   videoTimestamps: [tsi1.startTime, tsi2.startTime],
-// );
-
-// late List<Video> videos = [video1, video2, video3];

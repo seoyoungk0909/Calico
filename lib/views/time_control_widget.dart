@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:clovi_template/models/time_shop_items_model.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -124,6 +123,6 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
     final newPosition = builder(currentPosition);
 
     widget.ypController.seekTo(newPosition);
-    log("current=$currentPosition, new=$newPosition");
+    // log("current=$currentPosition, new=$newPosition");
   }
 }
