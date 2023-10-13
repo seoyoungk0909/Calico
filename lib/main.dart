@@ -1,7 +1,7 @@
-// import 'package:clovi_template/views/home_page.dart';
+import 'package:clovi_template/views/home_page.dart';
+import 'package:clovi_template/views/shorts_video_page.dart';
 import 'package:flutter/material.dart';
 import 'views/video_page.dart';
-// import 'views/home_page.dart';
 import 'views/item_detail_page.dart';
 import 'views/item_info_page.dart';
 
@@ -21,9 +21,10 @@ class MyApp extends StatelessWidget {
       routes: {
         'video': (context) => VideoPage(),
         'item_info': (context) => ItemInfoPage(),
-        'item_detail': (context) => ItemDetailPage()
+        'item_detail': (context) => ItemDetailPage(),
+        'shorts_video': (context) => ShortsVideoPage(),
       },
-      home: const VideoPage(),
+      home: HomePage(),
     );
   }
 }
