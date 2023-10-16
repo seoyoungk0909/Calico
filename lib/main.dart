@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'views/video_page.dart';
 import 'views/item_detail_page.dart';
 import 'views/item_info_page.dart';
+import 'utils/color_utils.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,6 +17,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: CalicoColors.representBlack,
+        primaryColorLight: CalicoColors.representWhite,
+        highlightColor: CalicoColors.representOrange,
+      ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
