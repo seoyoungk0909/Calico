@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:clovi_template/models/video_model.dart';
 // import 'package:clovi_template/services/remote_service.dart';
 import 'package:clovi_template/views/time_control_widget.dart';
+import 'package:clovi_template/views/video_ui_page.dart';
 import 'package:flutter/material.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -71,12 +72,13 @@ class _VideoPageState extends State<VideoPage> {
     log("initState");
   }
 
-  void directToItemInfoPage(Video video) async {
+  void directToItemInfoPage(Video video, String dir) async {
     // video.ypController.pause();
-    await Navigator.pushNamed(context, 'item_info', arguments: {
+    await Navigator.pushNamed(context, dir, arguments: {
       'controller': video.ypController,
       'timeShopItems': video.data?.timeShopItemLists,
       'model': video.data!.timeShopItemLists![0].model!,
+      'profileImgUrl': video.data!.profileImgUrl,
     });
     video.ypController?.play();
   }
@@ -89,7 +91,7 @@ class _VideoPageState extends State<VideoPage> {
           child: GestureDetector(
             onHorizontalDragEnd: (details) {
               if (details.velocity.pixelsPerSecond.dx < 0) {
-                directToItemInfoPage(video);
+                directToItemInfoPage(video, 'item_info');
               }
             },
             child: YoutubePlayer(
@@ -107,13 +109,6 @@ class _VideoPageState extends State<VideoPage> {
     );
   }
 
-  // bool shouldRefresh = false;
-  // void refreshWidget() {
-  //   setState(() {
-  //     shouldRefresh = !shouldRefresh;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,7 +121,12 @@ class _VideoPageState extends State<VideoPage> {
               scrollDirection: Axis.vertical,
               preloadPagesCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return videoWidget(snapshot.data![index]);
+                return Stack(
+                  children: [
+                    videoWidget(snapshot.data![index]),
+                    VideoUIPage(video: snapshot.data![index]),
+                  ],
+                );
               },
               controller: PreloadPageController(initialPage: 0),
               onPageChanged: (value) {
