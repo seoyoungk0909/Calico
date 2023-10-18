@@ -45,78 +45,49 @@ class _ChannelPageState extends State<ChannelPage> {
           physics: NeverScrollableScrollPhysics(),
           headerSliverBuilder: (context, isScrolled) {
             return [
-              SliverAppBar(
-                backgroundColor: Colors.white,
-                collapsedHeight: 250,
-                expandedHeight: 250,
-                flexibleSpace: channelView(profileImgUrl),
-              ),
-              SliverPersistentHeader(
-                delegate: MyDelegate(
-                  const TabBar(
-                    tabs: [
-                      Tab(
-                        text: '영상',
-                      ),
-                      Tab(
-                        text: '소개한 옷',
-                      ),
-                    ],
-                    indicatorColor: Colors.blue,
-                    unselectedLabelColor: Colors.grey,
-                    labelColor: Colors.black,
-                  ),
-                ),
-                floating: true,
-                pinned: true,
-              )
+              SliverList(
+                  delegate:
+                      SliverChildListDelegate([channelView(profileImgUrl)]))
             ];
           },
-          body: TabBarView(
+          body: Column(
             children: [
-              // 성빈 TODO
-              Container(
-                child: Text('영상'),
+              const Material(
+                color: Colors.white,
+                child: TabBar(
+                  labelColor: Colors.black,
+                  unselectedLabelColor: Colors.grey,
+                  indicatorWeight: 1,
+                  indicatorColor: Colors.black,
+                  tabs: [
+                    Tab(
+                      child: Text('영상'),
+                    ),
+                    Tab(
+                      child: Text('소개한 옷'),
+                    ),
+                  ],
+                ),
               ),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    // 성빈 TODO
+                    Container(
+                      child: Text('영상'),
+                    ),
 
-              // 진욱 TODO
-              Container(
-                child: Text('소개한 옷'),
+                    // 진욱 TODO
+                    Container(
+                      child: Text('소개한 옷'),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
         ),
       ),
     );
-  }
-}
-
-class MyDelegate extends SliverPersistentHeaderDelegate {
-  final TabBar tabbar;
-
-  MyDelegate(this.tabbar);
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    // TODO: implement build
-    return Container(
-      color: Colors.white,
-      child: tabbar,
-    );
-  }
-
-  @override
-  // TODO: implement maxExtent
-  double get maxExtent => tabbar.preferredSize.height;
-
-  @override
-  // TODO: implement minExtent
-  double get minExtent => tabbar.preferredSize.height;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    // TODO: implement shouldRebuild
-    return false;
   }
 }
