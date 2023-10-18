@@ -106,37 +106,36 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
     Model model = arguments['model'];
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Item Info Page'),
-      ),
-      body: GestureDetector(
-        child: SingleChildScrollView(
-            child: Column(children: [
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 1,
-            itemBuilder: (BuildContext context, int i) {
-              return timeItemView(timeShopItemList, model, ypController);
-            },
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 1,
-            itemBuilder: (
-              BuildContext context,
-              int i,
-            ) {
-              return allItemView(timeShopItemList, ypController);
-            },
-          ),
-        ])),
-        onHorizontalDragEnd: (details) {
-          if (details.velocity.pixelsPerSecond.dx > 0) {
-            Navigator.pop(context);
-          }
-        },
+      body: SafeArea(
+        child: GestureDetector(
+          child: SingleChildScrollView(
+              child: Column(children: [
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 1,
+              itemBuilder: (BuildContext context, int i) {
+                return timeItemView(timeShopItemList, model, ypController);
+              },
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 1,
+              itemBuilder: (
+                BuildContext context,
+                int i,
+              ) {
+                return allItemView(timeShopItemList, ypController);
+              },
+            ),
+          ])),
+          onHorizontalDragEnd: (details) {
+            if (details.velocity.pixelsPerSecond.dx > 0) {
+              Navigator.pop(context);
+            }
+          },
+        ),
       ),
     );
   }

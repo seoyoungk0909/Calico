@@ -21,188 +21,188 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
     // double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Item Detail Page'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ExtendedImage.network(
-              itemElement.item!.itemImgUrl!,
-              height: 400,
-              width: screenWidth * 0.95,
-              // fit: BoxFit.cover,
-              loadStateChanged: (ExtendedImageState state) {
-                switch (state.extendedImageLoadState) {
-                  case LoadState.loading:
-                    return null;
-                  case LoadState.completed:
-                    return null;
-                  case LoadState.failed:
-                    return const Icon(Icons.error);
-                }
-              },
-            ),
-            const Divider(
-              color: Colors.black,
-              height: 25,
-              thickness: 2,
-              indent: 22,
-              endIndent: 22,
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              width: screenWidth * 0.9,
-              child: Text(
-                itemElement.item!.brand!,
-                style: const TextStyle(
-                    decoration: TextDecoration.underline,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 17,
-                    color: Colors.black),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ExtendedImage.network(
+                itemElement.item!.itemImgUrl!,
+                height: 400,
+                width: screenWidth * 0.95,
+                // fit: BoxFit.cover,
+                loadStateChanged: (ExtendedImageState state) {
+                  switch (state.extendedImageLoadState) {
+                    case LoadState.loading:
+                      return null;
+                    case LoadState.completed:
+                      return null;
+                    case LoadState.failed:
+                      return const Icon(Icons.error);
+                  }
+                },
               ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              width: screenWidth * 0.9,
-              child: Text(
-                itemElement.item!.name!,
-                style: const TextStyle(
-                    height: 2,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 22,
-                    color: Colors.black),
+              const Divider(
+                color: Colors.black,
+                height: 25,
+                thickness: 2,
+                indent: 22,
+                endIndent: 22,
               ),
-            ),
-            Divider(
-              color: Colors.grey.shade200,
-              height: 25,
-              thickness: 2,
-              indent: 22,
-              endIndent: 22,
-            ),
-            Container(
-              alignment: Alignment.centerRight,
-              width: screenWidth * 0.9,
-              child: Text(
-                '${NumberFormat('#,### ').format(itemElement.item!.shops![0].price)}원',
-                style: const TextStyle(
-                    height: 2,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 20,
-                    color: Colors.black),
+              Container(
+                alignment: Alignment.centerLeft,
+                width: screenWidth * 0.9,
+                child: Text(
+                  itemElement.item!.brand!,
+                  style: const TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 17,
+                      color: Colors.black),
+                ),
               ),
-            ),
-            Divider(
-              color: Colors.grey.shade200,
-              height: 40,
-              thickness: 2,
-              indent: 22,
-              endIndent: 22,
-            ),
-            Container(
-              width: screenWidth * 0.9,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade300)),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Padding(
-                          padding: EdgeInsets.only(left: 40, top: 50)),
-                      SizedBox(
-                          width: screenWidth * 0.55,
-                          child: const Text(
-                            "판매처",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          )),
-                      SizedBox(
-                          width: screenWidth * 0.15,
-                          child: const Align(
-                              alignment: Alignment.centerRight,
-                              child: Text("가격",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w800))))
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          side:
-                              BorderSide(width: 5, color: Colors.grey.shade300),
-                          textStyle: const TextStyle(fontSize: 20),
-                        ),
-                        onPressed: () => launchUrlString(
-                            itemElement.item!.shops![0].shopUrl!),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 2, right: 5),
-                                child: ExtendedImage.network(
-                                  itemElement.item!.shops![0].logoUrl!,
-                                  width: screenWidth * 0.05,
-                                  fit: BoxFit.cover,
-                                  loadStateChanged: (ExtendedImageState state) {
-                                    switch (state.extendedImageLoadState) {
-                                      case LoadState.loading:
-                                        return null;
-                                      case LoadState.completed:
-                                        return null;
-                                      case LoadState.failed:
-                                        return const Icon(Icons.error,
-                                            color: Colors.black);
-                                    }
-                                  },
-                                ),
+              Container(
+                alignment: Alignment.centerLeft,
+                width: screenWidth * 0.9,
+                child: Text(
+                  itemElement.item!.name!,
+                  style: const TextStyle(
+                      height: 2,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 22,
+                      color: Colors.black),
+                ),
+              ),
+              Divider(
+                color: Colors.grey.shade200,
+                height: 25,
+                thickness: 2,
+                indent: 22,
+                endIndent: 22,
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                width: screenWidth * 0.9,
+                child: Text(
+                  '${NumberFormat('#,### ').format(itemElement.item!.shops![0].price)}원',
+                  style: const TextStyle(
+                      height: 2,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 20,
+                      color: Colors.black),
+                ),
+              ),
+              Divider(
+                color: Colors.grey.shade200,
+                height: 40,
+                thickness: 2,
+                indent: 22,
+                endIndent: 22,
+              ),
+              Container(
+                width: screenWidth * 0.9,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.shade300)),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Padding(
+                            padding: EdgeInsets.only(left: 40, top: 50)),
+                        SizedBox(
+                            width: screenWidth * 0.55,
+                            child: const Text(
+                              "판매처",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w800,
                               ),
-                              Container(
-                                width: screenWidth * 0.55,
-                                padding: const EdgeInsets.only(
-                                    left: 5, top: 5, bottom: 5),
-                                child: Text(
-                                  itemElement.item!.shops![0].name!,
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      fontStyle: FontStyle.normal,
-                                      color: Colors.black),
+                            )),
+                        SizedBox(
+                            width: screenWidth * 0.15,
+                            child: const Align(
+                                alignment: Alignment.centerRight,
+                                child: Text("가격",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w800))))
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            side: BorderSide(
+                                width: 5, color: Colors.grey.shade300),
+                            textStyle: const TextStyle(fontSize: 20),
+                          ),
+                          onPressed: () => launchUrlString(
+                              itemElement.item!.shops![0].shopUrl!),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 2, right: 5),
+                                  child: ExtendedImage.network(
+                                    itemElement.item!.shops![0].logoUrl!,
+                                    width: screenWidth * 0.05,
+                                    fit: BoxFit.cover,
+                                    loadStateChanged:
+                                        (ExtendedImageState state) {
+                                      switch (state.extendedImageLoadState) {
+                                        case LoadState.loading:
+                                          return null;
+                                        case LoadState.completed:
+                                          return null;
+                                        case LoadState.failed:
+                                          return const Icon(Icons.error,
+                                              color: Colors.black);
+                                      }
+                                    },
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: screenWidth * 0.21,
-                                child: Align(
-                                  alignment: Alignment.centerRight,
+                                Container(
+                                  width: screenWidth * 0.55,
+                                  padding: const EdgeInsets.only(
+                                      left: 5, top: 5, bottom: 5),
                                   child: Text(
-                                    '${NumberFormat('#,### ').format(itemElement.item!.shops![0].price)}원',
+                                    itemElement.item!.shops![0].name!,
                                     style: const TextStyle(
                                         fontSize: 15,
                                         fontStyle: FontStyle.normal,
                                         color: Colors.black),
                                   ),
                                 ),
-                              )
-                            ]
-                            // const Padding(padding: EdgeInsets.only(right: 20)),
-                            ),
-                      )
-                    ],
-                  ),
-                ],
+                                SizedBox(
+                                  width: screenWidth * 0.21,
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      '${NumberFormat('#,### ').format(itemElement.item!.shops![0].price)}원',
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontStyle: FontStyle.normal,
+                                          color: Colors.black),
+                                    ),
+                                  ),
+                                )
+                              ]
+                              // const Padding(padding: EdgeInsets.only(right: 20)),
+                              ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
