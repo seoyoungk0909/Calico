@@ -1,3 +1,4 @@
+import 'package:clovi_template/views/channel_page.dart';
 import 'package:clovi_template/views/home_page.dart';
 import 'package:clovi_template/views/shorts_video_page.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         'item_info': (context) => ItemInfoPage(),
         'item_detail': (context) => ItemDetailPage(),
         'shorts_video': (context) => ShortsVideoPage(),
+        'channel': (context) => ChannelPage(),
       },
       home: HomePage(),
     );
