@@ -1,6 +1,7 @@
 import 'package:clovi_template/views/channel_page.dart';
 import 'package:clovi_template/views/home_page.dart';
 import 'package:clovi_template/views/shorts_video_page.dart';
+import 'package:clovi_template/views/components/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'views/video_page.dart';
 import 'views/item_detail_page.dart';
@@ -17,6 +18,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration(seconds: 1), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    });
     return MaterialApp(
       theme: ThemeData(
         primaryColor: CalicoColors.representBlack,
@@ -32,7 +39,8 @@ class MyApp extends StatelessWidget {
         'shorts_video': (context) => ShortsVideoPage(),
         'channel': (context) => ChannelPage(),
       },
-      home: HomePage(),
+      // home: HomePage(),
+      home: SplashScreen(),
     );
   }
 }
