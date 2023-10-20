@@ -18,12 +18,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 1), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
-    });
     return MaterialApp(
       theme: ThemeData(
         primaryColor: CalicoColors.representBlack,
@@ -39,7 +33,6 @@ class MyApp extends StatelessWidget {
         'shorts_video': (context) => ShortsVideoPage(),
         'channel': (context) => ChannelPage(),
       },
-      // home: HomePage(),
       home: SplashScreen(),
     );
   }
