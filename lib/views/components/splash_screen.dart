@@ -12,6 +12,11 @@ class SplashScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Image.asset(
+              //   'assets/images/logo.png',
+              //   width: 150,
+              //   height: 150,
+              // ),
               SizedBox(width: 150, height: 150, child: Text('Calico Logo'))
             ],
           ),
