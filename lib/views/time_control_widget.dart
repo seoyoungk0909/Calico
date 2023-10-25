@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:clovi_template/models/time_shop_items_model.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -47,7 +46,7 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
   void updateItemIndex() async {
     final currentPosition = widget.ypController.value.position;
 
-    int newIndex = 1;
+    int newIndex = 0;
     for (int i = 0; i < timestamps.length; i++) {
       if (currentPosition >= timestamps[i]) {
         newIndex = i + 1;
@@ -127,6 +126,6 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
     final newPosition = builder(currentPosition);
 
     widget.ypController.seekTo(newPosition);
-    log("goToPosition");
+    // log("current=$currentPosition, new=$newPosition");
   }
 }

@@ -118,61 +118,54 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
     Video video = arguments['video'];
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Item Info Page'),
-        ),
-        body: GestureDetector(
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                    child: Column(children: [
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 1,
-                    itemBuilder: (BuildContext context, int i) {
-                      return timeItemView(
-                          timeShopItemList, model, ypController);
-                    },
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 1,
-                    itemBuilder: (
-                      BuildContext context,
-                      int i,
-                    ) {
-                      return allItemView(timeShopItemList, ypController);
-                    },
-                  ),
-                ])),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TimeControlWidget(
-                      ypController: video.ypController!,
-                      video: video,
-                      // ypController: snapshot.data!.ypController!,
-                      // video: snapshot.data!,
-                    ),
+      body: SafeArea(
+        child: GestureDetector(
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                  child: Column(children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 1,
+                  itemBuilder: (BuildContext context, int i) {
+                    return timeItemView(timeShopItemList, model, ypController);
+                  },
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 1,
+                  itemBuilder: (
+                    BuildContext context,
+                    int i,
+                  ) {
+                    return allItemView(timeShopItemList, ypController);
+                  },
+                ),
+              ])),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TimeControlWidget(
+                    ypController: video.ypController!,
+                    video: video,
+                    // ypController: snapshot.data!.ypController!,
+                    // video: snapshot.data!,
                   ),
                 ),
-              ],
-            ),
-            onHorizontalDragEnd: (details) {
-              if (details.velocity.pixelsPerSecond.dx > 0) {
-                Navigator.pop(context);
-              }
-            }));
-    // };
-
-    // else {
-    //   return Center(
-    //       child: CircularProgressIndicator(
-    //           color: Theme.of(context).primaryColor));
-    // }
+              ),
+            ],
+          ),
+          onHorizontalDragEnd: (details) {
+            if (details.velocity.pixelsPerSecond.dx > 0) {
+              Navigator.pop(context);
+            }
+          },
+        ),
+      ),
+    );
   }
 
   //         ),
