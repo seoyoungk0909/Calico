@@ -63,12 +63,15 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
-          padding: EdgeInsets.only(left: 20),
-          child: const Text(
-            '영상에 나온 옷들',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
+          padding: EdgeInsets.only(top: 44, bottom: 15),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 6),
+            child: const Text(
+              '영상에 나온 옷들',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           )),
       GridView.builder(
@@ -77,7 +80,7 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
         itemCount: allItems.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 0.545,
+          childAspectRatio: 0.53,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 0),
         itemBuilder: (BuildContext context, int index) {
@@ -147,7 +150,7 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(0),
                   child: TimeControlWidget(
                     ypController: video.ypController!,
                     video: video,

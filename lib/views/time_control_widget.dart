@@ -68,7 +68,8 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
   Widget build(BuildContext context) {
     updateItemIndex();
     return Container(
-      color: Colors.white,
+      color: Color.fromARGB(255, 239, 239, 239),
+      padding: EdgeInsets.only(bottom: 0),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -94,13 +95,36 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
                       }))
                     : null;
               },
-              child: Text('이전 옷 보기'),
+              child: Container(
+                  margin: EdgeInsetsDirectional.fromSTEB(5, 10, 5, 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Icon(Icons.arrow_back_ios,
+                            size: 16, color: Theme.of(context).primaryColor),
+                        Padding(
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            child: Text(
+                              '이전 옷 보기',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: 16,
+                              ),
+                            ))
+                      ])),
             ),
           ),
           // number
           Padding(
             padding: EdgeInsetsDirectional.only(end: 5),
-            child: Text('$itemIndex/${timestamps.length}'),
+            child: Text('$itemIndex / ${timestamps.length}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black,
+                  fontSize: 17,
+                  fontStyle: FontStyle.italic,
+                )),
           ),
           // next
           Padding(
@@ -123,7 +147,28 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
                     : null;
               },
               /* look for items*/
-              child: Text('다음 옷 보기'),
+              // child: Text('다음 옷 보기'),
+              child: Container(
+                  margin: EdgeInsetsDirectional.fromSTEB(5, 10, 5, 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            child: Text(
+                              '다음 옷 보기',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: 16,
+                              ),
+                            )),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ])),
             ),
           ),
         ],
