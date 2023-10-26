@@ -151,6 +151,7 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
                   child: TimeControlWidget(
                     ypController: video.ypController!,
                     video: video,
+                    refresh: true,
                     // ypController: snapshot.data!.ypController!,
                     // video: snapshot.data!,
                   ),

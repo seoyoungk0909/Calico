@@ -105,6 +105,7 @@ class _VideoPageState extends State<VideoPage> {
         TimeControlWidget(
           ypController: video.ypController!,
           video: video,
+          refresh: false,
         ),
       ],
     );

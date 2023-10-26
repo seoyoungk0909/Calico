@@ -6,11 +6,13 @@ import '../models/video_model.dart';
 class TimeControlWidget extends StatefulWidget {
   final YoutubePlayerController ypController;
   final Video video;
+  final bool refresh;
 
   const TimeControlWidget({
     super.key,
     required this.ypController,
     required this.video,
+    required this.refresh,
   });
 
   @override
@@ -64,6 +66,7 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
 
   @override
   Widget build(BuildContext context) {
+    updateItemIndex();
     return Container(
       color: Colors.white,
       child: Row(
@@ -76,6 +79,20 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
             child: TextButton(
               onPressed: () async {
                 await showPreviousItems();
+                widget.refresh
+                    ? (setState(() {
+                        // refreshing the page
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, 'item_info', arguments: {
+                          'controller': widget.ypController,
+                          'timeShopItems': widget.video.data?.timeShopItemLists,
+                          'model':
+                              widget.video.data!.timeShopItemLists![0].model!,
+                          'video': widget.video,
+                          'profileImgUrl': widget.video.data!.profileImgUrl,
+                        });
+                      }))
+                    : null;
               },
               child: Text('이전 옷 보기'),
             ),
@@ -91,6 +108,19 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
             child: TextButton(
               onPressed: () async {
                 await showNextItems();
+                widget.refresh
+                    ? (setState(() {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, 'item_info', arguments: {
+                          'controller': widget.ypController,
+                          'timeShopItems': widget.video.data?.timeShopItemLists,
+                          'model':
+                              widget.video.data!.timeShopItemLists![0].model!,
+                          'video': widget.video,
+                          'profileImgUrl': widget.video.data!.profileImgUrl,
+                        });
+                      }))
+                    : null;
               },
               /* look for items*/
               child: Text('다음 옷 보기'),
