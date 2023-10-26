@@ -6,11 +6,13 @@ import '../models/video_model.dart';
 class TimeControlWidget extends StatefulWidget {
   final YoutubePlayerController ypController;
   final Video video;
+  final bool refresh;
 
   const TimeControlWidget({
     super.key,
     required this.ypController,
     required this.video,
+    required this.refresh,
   });
 
   @override
@@ -64,7 +66,10 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
 
   @override
   Widget build(BuildContext context) {
+    updateItemIndex();
     return Container(
+      color: Color.fromARGB(255, 239, 239, 239),
+      padding: EdgeInsets.only(bottom: 0),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,14 +80,51 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
             child: TextButton(
               onPressed: () async {
                 await showPreviousItems();
+                widget.refresh
+                    ? (setState(() {
+                        // refreshing the page
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, 'item_info', arguments: {
+                          'controller': widget.ypController,
+                          'timeShopItems': widget.video.data?.timeShopItemLists,
+                          'model':
+                              widget.video.data!.timeShopItemLists![0].model!,
+                          'video': widget.video,
+                          'profileImgUrl': widget.video.data!.profileImgUrl,
+                        });
+                      }))
+                    : null;
               },
-              child: Text('이전 옷 보기'),
+              child: Container(
+                  margin: EdgeInsetsDirectional.fromSTEB(5, 10, 5, 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Icon(Icons.arrow_back_ios,
+                            size: 16, color: Theme.of(context).primaryColor),
+                        Padding(
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            child: Text(
+                              '이전 옷 보기',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: 16,
+                              ),
+                            ))
+                      ])),
             ),
           ),
           // number
           Padding(
             padding: EdgeInsetsDirectional.only(end: 5),
-            child: Text('$itemIndex/${timestamps.length}'),
+            child: Text('$itemIndex / ${timestamps.length}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black,
+                  fontSize: 17,
+                  fontStyle: FontStyle.italic,
+                )),
           ),
           // next
           Padding(
@@ -90,9 +132,43 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
             child: TextButton(
               onPressed: () async {
                 await showNextItems();
+                widget.refresh
+                    ? (setState(() {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, 'item_info', arguments: {
+                          'controller': widget.ypController,
+                          'timeShopItems': widget.video.data?.timeShopItemLists,
+                          'model':
+                              widget.video.data!.timeShopItemLists![0].model!,
+                          'video': widget.video,
+                          'profileImgUrl': widget.video.data!.profileImgUrl,
+                        });
+                      }))
+                    : null;
               },
               /* look for items*/
-              child: Text('다음 옷 보기'),
+              // child: Text('다음 옷 보기'),
+              child: Container(
+                  margin: EdgeInsetsDirectional.fromSTEB(5, 10, 5, 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.only(left: 10, right: 10),
+                            child: Text(
+                              '다음 옷 보기',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: 16,
+                              ),
+                            )),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ])),
             ),
           ),
         ],
@@ -104,6 +180,7 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
     Duration rewind(Duration currentPosition) => timestamps.lastWhere(
         (element) => currentPosition > element + Duration(seconds: 2),
         orElse: (() => Duration.zero));
+    print('showpreviousitem ${widget.ypController.metadata.title}');
     await goToPosition(rewind);
   }
 
@@ -112,6 +189,7 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
         timestamps.firstWhere((position) => currentPosition < position,
             orElse: (() =>
                 widget.ypController.metadata.duration - Duration(seconds: 1)));
+    print('shownextitem ${widget.ypController.metadata.title}');
 
     await goToPosition(forward);
   }

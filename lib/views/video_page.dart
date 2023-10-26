@@ -78,6 +78,7 @@ class _VideoPageState extends State<VideoPage> {
       'controller': video.ypController,
       'timeShopItems': video.data?.timeShopItemLists,
       'model': video.data!.timeShopItemLists![0].model!,
+      'video': video,
       'profileImgUrl': video.data!.profileImgUrl,
     });
     video.ypController?.play();
@@ -104,6 +105,7 @@ class _VideoPageState extends State<VideoPage> {
         TimeControlWidget(
           ypController: video.ypController!,
           video: video,
+          refresh: false,
         ),
       ],
     );

@@ -48,17 +48,18 @@ Widget videoItemUI(BuildContext context, ItemElement itemElement,
         decoration: const BoxDecoration(
           border: Border(
             top: BorderSide(
-                width: 1.0, color: Color.fromARGB(255, 233, 233, 233)),
+                width: 1.0, color: Color.fromARGB(255, 242, 242, 242)),
           ),
         ),
+        padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 14, 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8),
+            Container(
+              margin: const EdgeInsets.only(right: 8),
               child: ExtendedImage.network(
                 itemElement.item!.itemImgUrl!,
-                width: 75,
+                width: 80,
                 fit: BoxFit.cover,
                 loadStateChanged: (ExtendedImageState state) {
                   switch (state.extendedImageLoadState) {
@@ -75,7 +76,7 @@ Widget videoItemUI(BuildContext context, ItemElement itemElement,
             Container(
                 width: 170,
                 height: 100,
-                padding: const EdgeInsets.only(top: 5, bottom: 5),
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,14 +104,14 @@ Widget videoItemUI(BuildContext context, ItemElement itemElement,
                             '${itemElement.item!.color} / ${itemElement.item!.size} 착용',
                             style: const TextStyle(
                               fontSize: 13,
-                              color: Color.fromARGB(255, 96, 96, 96),
+                              color: Color.fromARGB(255, 93, 93, 93),
                             ),
                           )),
                     ),
                   ],
                 )),
             Container(
-                padding: const EdgeInsetsDirectional.fromSTEB(15, 20, 10, 20),
+                margin: const EdgeInsetsDirectional.fromSTEB(10, 10, 0, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -119,17 +120,17 @@ Widget videoItemUI(BuildContext context, ItemElement itemElement,
                       '${NumberFormat('#,###').format(itemElement.item!.shops![0].price)}원',
                       style: const TextStyle(
                         fontSize: 15,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.only(top: 5),
+                      margin: const EdgeInsets.only(top: 10),
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: const Color.fromARGB(255, 255, 111, 0),
+                          color: Theme.of(context).highlightColor,
                           width: 1.0,
                         ),
-                        borderRadius: BorderRadius.circular(7.0),
+                        borderRadius: BorderRadius.circular(6.0),
                       ),
                       child: Material(
                         color: Colors.transparent,
@@ -137,14 +138,17 @@ Widget videoItemUI(BuildContext context, ItemElement itemElement,
                           onTap: () {
                             _launchURL(itemElement.item!.shops![0].shopUrl!);
                           },
-                          child: const Padding(
+                          child: Padding(
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(10, 6, 10, 6),
                             child: Text(
                               '구매 링크',
                               style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color.fromARGB(255, 255, 111, 0)),
+                                fontSize: 13,
+                                color: Theme.of(context).highlightColor,
+                                fontWeight: FontWeight.w500,
+                                //  Color.fromARGB(255, 255, 111, 0)
+                              ),
                             ),
                           ),
                         ),
@@ -166,6 +170,7 @@ Widget allItemUI(BuildContext context, ItemElement itemElement,
         });
       },
       child: Container(
+        // height: 500,
         margin: const EdgeInsetsDirectional.fromSTEB(5, 10, 5, 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -200,37 +205,43 @@ Widget allItemUI(BuildContext context, ItemElement itemElement,
             ),
             Container(
                 width: 180,
-                height: 100,
-                padding: const EdgeInsets.only(left: 10, right: 10),
+                // height: 100,
+                // padding: const EdgeInsets.only(left: 10, top: 15, right: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
+                      padding: const EdgeInsets.only(bottom: 6),
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(
                           '${itemElement.item!.brand}',
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w700,
                             decoration: TextDecoration.underline,
+                            fontSize: 13,
                           ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
+                    Container(
+                      height: 40,
+                      margin: EdgeInsets.only(bottom: 10.0),
+                      padding: EdgeInsets.only(right: 10),
                       child: Text(
                         '${itemElement.item!.name}',
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 114, 114, 114),
+                        maxLines: 2,
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 93, 93, 93),
+                          fontWeight: FontWeight.w500,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
-                    const Spacer(),
                     Align(
                       alignment: Alignment.bottomLeft,
                       child: RichText(
@@ -241,10 +252,12 @@ Widget allItemUI(BuildContext context, ItemElement itemElement,
                               text: NumberFormat('#,###')
                                   .format(itemElement.item!.shops![0].price),
                               style: const TextStyle(
-                                fontWeight: FontWeight.w800,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
                               ),
                             ),
-                            const TextSpan(text: '원'),
+                            const TextSpan(
+                                text: '원', style: TextStyle(fontSize: 13)),
                           ],
                         ),
                       ),
@@ -258,15 +271,17 @@ Widget allItemUI(BuildContext context, ItemElement itemElement,
 
 Widget itemHeader(BuildContext context, Model model) {
   return Container(
+    height: 44,
     decoration: const BoxDecoration(),
-    padding: const EdgeInsetsDirectional.all(15),
+    padding: const EdgeInsetsDirectional.only(start: 10, end: 10),
     child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const Text(
           'Calico 자동 검색 서비스',
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 13,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -275,7 +290,7 @@ Widget itemHeader(BuildContext context, Model model) {
             '${model.name} ${model.heightCm?.toStringAsFixed(0)}cm ${model.weightKg?.toStringAsFixed(0)}kg',
             textAlign: TextAlign.right,
             style: const TextStyle(
-              fontSize: 14,
+              fontSize: 13,
               fontWeight: FontWeight.bold,
             ),
           ),
