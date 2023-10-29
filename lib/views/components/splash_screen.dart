@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:clovi_template/views/home_page.dart';
+import 'package:flutter_svg/svg.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Wait for 1 second and then navigate to HomePage()
-    Future.delayed(Duration(seconds: 1), () {
+    // Wait for 2.5 second and then navigate to HomePage()
+    Future.delayed(Duration(milliseconds: 2500), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
       );
     });
 
-    return Scaffold(body: Container(
+    return Scaffold(
+      body: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
         ),
@@ -21,21 +23,10 @@ class SplashScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Image.asset(
-              //   'assets/images/logo.png',
-              //   width: 150,
-              //   height: 150,
-              // ),
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 2.0,
-                  ),
-                ),
-              ),
+              SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: SvgPicture.asset('icons/logo.svg')),
             ],
           ),
         ),
