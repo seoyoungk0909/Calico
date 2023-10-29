@@ -1,6 +1,7 @@
 import 'package:clovi_template/views/channel_page.dart';
 import 'package:clovi_template/views/home_page.dart';
 import 'package:clovi_template/views/shorts_video_page.dart';
+import 'package:clovi_template/views/components/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'views/video_page.dart';
 import 'views/item_detail_page.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         'shorts_video': (context) => ShortsVideoPage(),
         'channel': (context) => ChannelPage(),
       },
-      home: HomePage(),
+      home: SplashScreen(),
     );
   }
 }
