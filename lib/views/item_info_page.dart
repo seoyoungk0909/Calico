@@ -1,12 +1,18 @@
+import 'dart:convert';
+
 import 'package:clovi_template/models/item_element_model.dart';
 import 'package:clovi_template/models/time_shop_items_model.dart';
+import 'package:clovi_template/views/time_control_widget.dart';
+import 'package:clovi_template/models/video_model.dart';
 import 'package:clovi_template/models/model_model.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'components/item_info_ui.dart';
+import 'package:http/http.dart' as http;
 
 class ItemInfoPage extends StatefulWidget {
   const ItemInfoPage({super.key});
+
   @override
   State<ItemInfoPage> createState() => _ItemInfoPageState();
 }
@@ -57,12 +63,15 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
-          padding: EdgeInsets.only(left: 20),
-          child: const Text(
-            '영상에 나온 옷들',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
+          padding: EdgeInsets.only(top: 44, bottom: 15),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 6),
+            child: const Text(
+              '영상에 나온 옷들',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           )),
       GridView.builder(
@@ -71,7 +80,7 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
         itemCount: allItems.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 0.545,
+          childAspectRatio: 0.53,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 0),
         itemBuilder: (BuildContext context, int index) {
@@ -98,38 +107,61 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
     YoutubePlayerController ypController = arguments['controller'];
     List<TimeShopItemLists> timeShopItemList = arguments['timeShopItems'];
     Model model = arguments['model'];
+    Video video = arguments['video'];
 
     return Scaffold(
       body: SafeArea(
         child: GestureDetector(
-          child: SingleChildScrollView(
-              child: Column(children: [
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 1,
-              itemBuilder: (BuildContext context, int i) {
-                return timeItemView(timeShopItemList, model, ypController);
-              },
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 1,
-              itemBuilder: (
-                BuildContext context,
-                int i,
-              ) {
-                return allItemView(timeShopItemList, ypController);
-              },
-            ),
-          ])),
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                  child: Column(children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 1,
+                  itemBuilder: (BuildContext context, int i) {
+                    return timeItemView(timeShopItemList, model, ypController);
+                  },
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 1,
+                  itemBuilder: (
+                    BuildContext context,
+                    int i,
+                  ) {
+                    return allItemView(timeShopItemList, ypController);
+                  },
+                ),
+              ])),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(0),
+                  child: TimeControlWidget(
+                    ypController: video.ypController!,
+                    video: video,
+                    refresh: true,
+                    // ypController: snapshot.data!.ypController!,
+                    // video: snapshot.data!,
+                  ),
+                ),
+              ),
+            ],
+          ),
           onHorizontalDragEnd: (details) {
             if (details.velocity.pixelsPerSecond.dx > 0) {
               Navigator.pop(context);
@@ -139,4 +171,8 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
       ),
     );
   }
+
+  //         ),
+  //   );
+  // }
 }
