@@ -75,7 +75,7 @@ Widget videoItemUI(BuildContext context, ItemElement itemElement,
             ),
             Container(
                 width: 170,
-                height: 100,
+                height: 120,
                 padding: const EdgeInsets.only(top: 10, bottom: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
