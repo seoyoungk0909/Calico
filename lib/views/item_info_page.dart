@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+// import 'dart:convert';
 import 'package:clovi_template/models/item_element_model.dart';
 import 'package:clovi_template/models/time_shop_items_model.dart';
 import 'package:clovi_template/views/time_control_widget.dart';
@@ -8,7 +7,7 @@ import 'package:clovi_template/models/model_model.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'components/item_info_ui.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 
 class ItemInfoPage extends StatefulWidget {
   const ItemInfoPage({super.key});
@@ -155,8 +154,6 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
                     ypController: video.ypController!,
                     video: video,
                     refresh: true,
-                    // ypController: snapshot.data!.ypController!,
-                    // video: snapshot.data!,
                   ),
                 ),
               ),
