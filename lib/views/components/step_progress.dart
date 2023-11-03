@@ -35,17 +35,10 @@ class _StepProgressState extends State<StepProgress> {
     double screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.end,
-        //   children: [
-        //     Text(
-        //         '${(widget.currentStep + 1).toInt()} / ${widget.steps.toInt()}'),
-        //   ],
-        // ),
         Container(
           height: 4,
           width: screenWidth,
-          margin: EdgeInsets.symmetric(vertical: 16),
+          margin: EdgeInsets.symmetric(vertical: 1),
           child: Stack(
             children: [
               AnimatedContainer(

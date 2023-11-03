@@ -3,6 +3,7 @@ import 'package:clovi_template/views/components/bottom_button.dart';
 import 'package:clovi_template/views/components/step_progress.dart';
 import 'package:clovi_template/views/components/style_chip.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SurveyPage extends StatefulWidget {
   const SurveyPage({super.key});
@@ -11,7 +12,34 @@ class SurveyPage extends StatefulWidget {
 }
 
 class _SurveyPageState extends State<SurveyPage> {
-  List<String> genders = ['여자', '남자'];
+  int selected = 0;
+
+  Widget genderRadio(String text, int index) {
+    return OutlinedButton(
+        onPressed: () {
+          setState(() {
+            selected = index;
+          });
+        },
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: 21,
+            color: (selected == index)
+                ? CalicoColors.representOrange
+                : Color.fromARGB(255, 177, 177, 177),
+          ),
+        ),
+        style: OutlinedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: BorderSide(
+                  color: (selected == index)
+                      ? CalicoColors.representOrange
+                      : Color.fromARGB(255, 177, 177, 177))),
+        ));
+  }
+
   List<String> ages = [
     '16-19',
     '20-24',
@@ -24,22 +52,6 @@ class _SurveyPageState extends State<SurveyPage> {
 
   int tag = 1;
   List<String> tags = [];
-  List<String> options = [
-    '빈티지',
-    '러블리',
-    '귀여운',
-    '힙한',
-    '꾸안꾸',
-    '아메카지',
-    '디자이너',
-    '모던',
-    '스트릿',
-    '클래식',
-    '미니멀',
-    '감성'
-  ];
-
-  String? selectedGender = '여자';
   String? selectedAge = '16-19';
 
   PageController _controller = PageController(initialPage: 0);
@@ -64,14 +76,25 @@ class _SurveyPageState extends State<SurveyPage> {
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(
-            height: 20,
-          ),
-          Padding(padding: const EdgeInsets.symmetric(vertical: 10)),
+          SizedBox(height: 20),
+          Padding(padding: const EdgeInsets.symmetric(vertical: 5)),
+          Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                  width: 110,
+                  child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: TextButton(
+                          child: Text('건너뛰기',
+                              style: TextStyle(
+                                  fontSize: 11.5,
+                                  color: Color.fromARGB(255, 194, 194, 194))),
+                          onPressed: () {})))),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             child: StepProgress(currentStep: _currentPage, steps: 3),
           ),
+          Padding(padding: const EdgeInsets.symmetric(vertical: 5)),
           Expanded(
             child: PageView(
               controller: _controller,
@@ -99,28 +122,20 @@ class _SurveyPageState extends State<SurveyPage> {
                           style: TextStyle(
                               fontSize: 11.47,
                               color: Color.fromARGB(255, 177, 177, 177)))),
-                  Padding(padding: const EdgeInsets.symmetric(vertical: 10)),
-                  Container(
-                      child: DropdownButton<String>(
-                    value: selectedGender,
-                    underline: const SizedBox(),
-                    iconSize: 0.0,
-                    itemHeight: screenHeight * 0.15,
-                    alignment: Alignment.center,
-                    style: TextStyle(
-                        fontSize: 70,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.black),
-                    items: genders
-                        .map((gender) => DropdownMenuItem<String>(
-                              value: gender,
-                              child: Text(gender),
-                            ))
-                        .toList(),
-                    onChanged: (gender) =>
-                        setState(() => selectedGender = gender),
+                  Padding(padding: const EdgeInsets.symmetric(vertical: 20)),
+                  Center(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          width: 100, height: 50, child: genderRadio("여자", 1)),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10)),
+                      Container(
+                          width: 100, height: 50, child: genderRadio("남자", 2))
+                    ],
                   )),
-                  Padding(padding: const EdgeInsets.symmetric(vertical: 10)),
+                  Padding(padding: const EdgeInsets.symmetric(vertical: 20)),
                   Container(
                     width: screenWidth * 0.7,
                     alignment: Alignment.center,
@@ -169,7 +184,7 @@ class _SurveyPageState extends State<SurveyPage> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 11.47,
-                              color: Color.fromARGB(255, 177, 177, 177)))),
+                              color: Color.fromRGBO(177, 177, 177, 1)))),
                   SizedBox(
                       height: screenHeight * 0.2,
                       width: screenWidth * 0.3,
@@ -177,11 +192,15 @@ class _SurveyPageState extends State<SurveyPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 16),
                         child: TextFormField(
+                          inputFormatters: [
+                            new LengthLimitingTextInputFormatter(2)
+                          ],
                           style: TextStyle(
                               fontSize: 70,
                               fontWeight: FontWeight.w800,
                               color: CalicoColors.representBlack),
                           textAlign: TextAlign.center,
+                          keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
                               border: UnderlineInputBorder(),
                               hintText: '20',
@@ -191,6 +210,7 @@ class _SurveyPageState extends State<SurveyPage> {
                                   color: Color.fromARGB(255, 177, 177, 177))),
                         ),
                       )),
+                  Padding(padding: const EdgeInsets.symmetric(vertical: 10)),
                   Container(
                     width: screenWidth * 0.7,
                     alignment: Alignment.center,
