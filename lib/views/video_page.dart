@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:clovi_template/models/video_model.dart';
+import 'package:clovi_template/views/components/splash_screen.dart';
 // import 'package:clovi_template/services/remote_service.dart';
-import 'package:clovi_template/views/time_control_widget.dart';
+// import 'package:clovi_template/views/time_control_widget.dart';
+import 'package:clovi_template/views/video_player_screen.dart';
 import 'package:clovi_template/views/video_ui_page.dart';
 import 'package:flutter/material.dart';
 import 'package:preload_page_view/preload_page_view.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+// import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:http/http.dart' as http;
 
 class VideoPage extends StatefulWidget {
@@ -84,32 +85,31 @@ class _VideoPageState extends State<VideoPage> {
     video.ypController?.play();
   }
 
-  // with TimeControlWidgert
-  Widget videoWidget(Video video) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: GestureDetector(
-            onHorizontalDragEnd: (details) {
-              if (details.velocity.pixelsPerSecond.dx < 0) {
-                directToItemInfoPage(video, 'item_info');
-              }
-            },
-            child: YoutubePlayer(
-              controller: video.ypController!,
-              showVideoProgressIndicator: true,
-              bufferIndicator: null,
-            ),
-          ),
-        ),
-        TimeControlWidget(
-          ypController: video.ypController!,
-          video: video,
-          refresh: false,
-        ),
-      ],
-    );
-  }
+  // with TimeControlWidget
+  // Widget videoWidget(Video video) {
+  //   return Column(
+  //     children: <Widget>[
+  //       Expanded(
+  //         child: GestureDetector(
+  //           onHorizontalDragEnd: (details) {
+  //             if (details.velocity.pixelsPerSecond.dx < 0) {
+  //               directToItemInfoPage(video, 'item_info');
+  //             }
+  //           },
+  //           child: YoutubePlayer(
+  //             controller: video.ypController!,
+  //             showVideoProgressIndicator: true,
+  //           ),
+  //         ),
+  //       ),
+  //       TimeControlWidget(
+  //         ypController: video.ypController!,
+  //         video: video,
+  //         refresh: false,
+  //       ),
+  //     ],
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -119,37 +119,29 @@ class _VideoPageState extends State<VideoPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return PreloadPageView.builder(
-              itemCount: snapshot.data!.length,
+              // itemCount: snapshot.data!.length,
               scrollDirection: Axis.vertical,
-              preloadPagesCount: snapshot.data!.length,
+              preloadPagesCount: snapshot.data!.length - 1,
               itemBuilder: (context, index) {
                 return Stack(
                   children: [
-                    videoWidget(snapshot.data![index]),
-                    VideoUIPage(video: snapshot.data![index]),
+                    // videoWidget(snapshot.data![index % snapshot.data!.length]),
+                    VideoPlayerScreen(
+                        video: snapshot.data![index % snapshot.data!.length]),
+                    VideoUIPage(
+                        video: snapshot.data![index % snapshot.data!.length]),
                   ],
                 );
               },
               controller: PreloadPageController(initialPage: 0),
               onPageChanged: (value) {
-                // setState(
-                //   () {
-                //     // snapshot.data![value].ypController!.play();
-                //   },
-                // );
-                snapshot.data![value].ypController!.play();
+                snapshot.data![value % snapshot.data!.length].ypController!
+                    .play();
                 // currentIndex = value;
               },
             );
           } else {
-            return const Scaffold(
-              body: Center(
-                child: Text(
-                  'Loading...',
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
-            );
+            return splash(context);
           }
         },
       ),

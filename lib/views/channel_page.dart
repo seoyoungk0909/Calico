@@ -1,5 +1,7 @@
+import 'package:clovi_template/models/item_element_model.dart';
 import 'package:clovi_template/models/model_model.dart';
 import 'package:clovi_template/models/time_shop_items_model.dart';
+import 'package:clovi_template/views/components/item_info_ui.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 // import 'package:clovi_template/models/video_model.dart';
@@ -53,6 +55,20 @@ class _ChannelPageState extends State<ChannelPage> {
     'https://api.clovi.app/api/v1/videos?videoUrl=0-BXWBhhzNk',
     'https://api.clovi.app/api/v1/videos?videoUrl=7U74B9Zee6M',
   ];
+
+  // Future<List<Video>> getVideoApis(List<String> urls) async {
+  //   List<Video> videos = [];
+
+  //   for (String url in urls) {
+  //     var uri = Uri.parse(url);
+  //     final response = await http.get(uri);
+
+  //     var data = jsonDecode(utf8.decode(response.bodyBytes));
+  //     videos.add(Video.fromJson(data));
+  //   }
+  //   return videos;
+  // }
+
   String? convertUrlToId(String url, {bool trimWhitespaces = true}) {
     if (!url.contains("http") && (url.length == 11)) return url;
     if (trimWhitespaces) url = url.trim();
@@ -90,12 +106,13 @@ class _ChannelPageState extends State<ChannelPage> {
     // String numViews = getViews(videoId);
     return GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, 'video', 
-          // arguments: {
-          //   'controller': video,
-          //   'timeShopItems': timeShopItemList[0],
-          //   'model': model,
-          // }
+          Navigator.pushNamed(
+            context, 'video',
+            // arguments: {
+            //   'controller': video,
+            //   'timeShopItems': timeShopItemList[0],
+            //   'model': model,
+            // }
           );
         },
         child: Column(
@@ -120,6 +137,43 @@ class _ChannelPageState extends State<ChannelPage> {
             ),
           ],
         ));
+  }
+
+  Widget allItemView(
+    List<TimeShopItemLists> timeShopItemsList,
+    YoutubePlayerController ypController,
+  ) {
+    // filter out duplicating items
+    List<ItemElement> allItems = [];
+    Set<int> uniqueItemIds = {};
+    timeShopItemsList.forEach((item) {
+      item.items?.forEach((subItem) {
+        int itemId = subItem.item?.id ?? 0;
+        if (!uniqueItemIds.contains(itemId)) {
+          uniqueItemIds.add(itemId);
+          allItems.add(subItem);
+        }
+      });
+    });
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: allItems.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.53,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          itemBuilder: (BuildContext context, int index) {
+            return allItemUI(context, allItems[index], ypController);
+          },
+        ),
+      ],
+    );
   }
 
   @override
@@ -181,7 +235,6 @@ class _ChannelPageState extends State<ChannelPage> {
                 child: TabBarView(
                   children: [
                     // 성빈 TODO
-
                     GridView.builder(
                       shrinkWrap: true,
                       // physics: NeverScrollableScrollPhysics(),
@@ -198,9 +251,24 @@ class _ChannelPageState extends State<ChannelPage> {
                       },
                     ),
 
-                    // 진욱 TODO
-                    Container(
-                      child: Text('소개한 옷'),
+                    // 소개한 옷
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: 1,
+                            itemBuilder: (
+                              BuildContext context,
+                              int i,
+                            ) {
+                              return allItemView(
+                                  timeShopItemList, ypController);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
