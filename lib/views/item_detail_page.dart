@@ -1,4 +1,5 @@
 import 'package:clovi_template/models/item_element_model.dart';
+import 'package:clovi_template/views/bookmark_page.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -72,6 +73,19 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                       fontWeight: FontWeight.w800,
                       fontSize: 22,
                       color: Colors.black),
+                ),
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.only(right: 20),
+                child: const Column(
+                  children: [
+                    Icon(
+                      Icons.favorite_outline,
+                      color: Colors.black,
+                      size: 40,
+                    ),
+                  ],
                 ),
               ),
               Divider(
@@ -200,6 +214,15 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                     ),
                   ],
                 ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BookmarkPage()));
+                },
+                child: const Text('Bookmark'),
               ),
             ],
           ),
