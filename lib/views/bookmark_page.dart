@@ -14,7 +14,7 @@ class BookmarkPage extends StatelessWidget {
           children: [
             Container(
               alignment: const Alignment(-1.3, 0),
-              child: Text('    찜',
+              child: Text('     찜',
                   style: const TextStyle(color: Colors.black, fontSize: 18)),
             )
           ],

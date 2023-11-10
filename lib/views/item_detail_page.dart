@@ -12,7 +12,10 @@ class ItemDetailPage extends StatefulWidget {
   State<ItemDetailPage> createState() => _ItemDetailPageState();
 }
 
+bool _isClicked = false;
+
 class _ItemDetailPageState extends State<ItemDetailPage> {
+  Color _iconColor = Colors.black;
   @override
   Widget build(BuildContext context) {
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
@@ -78,13 +81,25 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
               Container(
                 alignment: Alignment.centerRight,
                 padding: const EdgeInsets.only(right: 20),
-                child: const Column(
+                child: Column(
                   children: [
-                    Icon(
-                      Icons.favorite_outline,
-                      color: Colors.black,
-                      size: 40,
-                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _isClicked = !_isClicked;
+                          if (_isClicked) {
+                            _iconColor = Colors.red;
+                          } else {
+                            _iconColor = Colors.black;
+                          }
+                        });
+                      },
+                      icon: Icon(
+                        _isClicked ? Icons.favorite : Icons.favorite_border,
+                        color: _iconColor,
+                        size: 40,
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -215,15 +230,15 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                   ],
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const BookmarkPage()));
-                },
-                child: const Text('Bookmark'),
-              ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //             builder: (context) => const BookmarkPage()));
+              //   },
+              //   child: const Text('Bookmark'),
+              // ),
             ],
           ),
         ),
