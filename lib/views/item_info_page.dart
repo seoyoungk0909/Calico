@@ -1,10 +1,12 @@
 // import 'dart:convert';
 import 'package:clovi_template/models/item_element_model.dart';
 import 'package:clovi_template/models/time_shop_items_model.dart';
+import 'package:clovi_template/provider/item_info_provider.dart';
 import 'package:clovi_template/views/time_control_widget.dart';
 import 'package:clovi_template/models/video_model.dart';
 import 'package:clovi_template/models/model_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'components/item_info_ui.dart';
 // import 'package:http/http.dart' as http;
@@ -29,7 +31,7 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
           BuildContext context,
           int i,
         ) {
-          return videoItemUI(context, items[i], ypController);
+          return VideoItemUI(context, items[i]);
         },
       ),
       Container(
@@ -89,21 +91,21 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
     ]);
   }
 
-  Widget timeItemView(List<TimeShopItemLists> timeShopItemsList, Model model,
-      YoutubePlayerController ypController) {
-    for (int i = 0; i < timeShopItemsList.length; i++) {
-      TimeShopItemLists currentItem = timeShopItemsList[i];
-      TimeShopItemLists? nextItem =
-          (i + 1 < timeShopItemsList.length) ? timeShopItemsList[i + 1] : null;
+  // Widget timeItemView(List<TimeShopItemLists> timeShopItemsList, Model model,
+  //     YoutubePlayerController ypController) {
+  //   for (int i = 0; i < timeShopItemsList.length; i++) {
+  //     TimeShopItemLists currentItem = timeShopItemsList[i];
+  //     TimeShopItemLists? nextItem =
+  //         (i + 1 < timeShopItemsList.length) ? timeShopItemsList[i + 1] : null;
 
-      if (currentItem.times!.start! <= ypController.value.position.inSeconds &&
-          (nextItem == null ||
-              nextItem.times!.start! > ypController.value.position.inSeconds)) {
-        return itemView(currentItem.items!, model, ypController);
-      }
-    }
-    return Container();
-  }
+  //     if (currentItem.times!.start! <= ypController.value.position.inSeconds &&
+  //         (nextItem == null ||
+  //             nextItem.times!.start! > ypController.value.position.inSeconds)) {
+  //       return itemView(currentItem.items!, model, ypController);
+  //     }
+  //   }
+  //   return Container();
+  // }
 
   @override
   void initState() {
@@ -114,62 +116,76 @@ class _ItemInfoPageState extends State<ItemInfoPage> {
   Widget build(BuildContext context) {
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
-    YoutubePlayerController ypController = arguments['controller'];
-    List<TimeShopItemLists> timeShopItemList = arguments['timeShopItems'];
-    Model model = arguments['model'];
-    Video video = arguments['video'];
+    return Consumer<ItemInfoProvider>(
+      builder: (context, provider, child) {
+        YoutubePlayerController ypController = arguments['controller'];
+        List<TimeShopItemLists> timeShopItemsList = arguments['timeShopItems'];
+        Model model = arguments['model'];
+        Video video = arguments['video'];
 
-    return Scaffold(
-      body: SafeArea(
-        child: GestureDetector(
-          child: Stack(
-            children: [
-              SingleChildScrollView(
-                  child: Column(children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: 1,
-                  itemBuilder: (BuildContext context, int i) {
-                    return timeItemView(timeShopItemList, model, ypController);
-                  },
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: 1,
-                  itemBuilder: (
-                    BuildContext context,
-                    int i,
-                  ) {
-                    return allItemView(timeShopItemList, ypController);
-                  },
-                ),
-              ])),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: TimeControlWidget(
-                    ypController: video.ypController!,
-                    video: video,
-                    refresh: true,
+        return Scaffold(
+          body: SafeArea(
+            child: GestureDetector(
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                      child: Column(children: [
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 1,
+                      itemBuilder: (BuildContext context, int i) {
+                        // return timeItemView(timeShopItemList, model, ypController);
+                        TimeShopItemLists currentItem =
+                            timeShopItemsList[provider.currentIndex - 1];
+                        // print("current item index = ${provider.currentIndex}");
+                        return itemView(
+                            currentItem.items!, model, ypController);
+                      },
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 1,
+                      itemBuilder: (
+                        BuildContext context,
+                        int i,
+                      ) {
+                        return allItemView(timeShopItemsList, ypController);
+                      },
+                    ),
+                  ])),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(0),
+                      child: ChangeNotifierProvider(
+                        create: (_) => ItemInfoProvider(),
+                        child: TimeControlWidget(
+                          ypController: video.ypController!,
+                          video: video,
+                          onIndexChange: (index) {
+                            // print("index changed in item info page = $index");
+                            Provider.of<ItemInfoProvider>(context,
+                                    listen: false)
+                                .currentIndex = index;
+                          },
+                          // refresh: true,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+              onHorizontalDragEnd: (details) {
+                if (details.velocity.pixelsPerSecond.dx > 0) {
+                  Navigator.pop(context);
+                }
+              },
+            ),
           ),
-          onHorizontalDragEnd: (details) {
-            if (details.velocity.pixelsPerSecond.dx > 0) {
-              Navigator.pop(context);
-            }
-          },
-        ),
-      ),
+        );
+      },
     );
   }
-
-  //         ),
-  //   );
-  // }
 }
