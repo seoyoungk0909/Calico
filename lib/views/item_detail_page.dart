@@ -1,4 +1,5 @@
 import 'package:clovi_template/models/item_element_model.dart';
+import 'package:clovi_template/views/bookmark_page.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,7 +12,10 @@ class ItemDetailPage extends StatefulWidget {
   State<ItemDetailPage> createState() => _ItemDetailPageState();
 }
 
+bool _isClicked = false;
+
 class _ItemDetailPageState extends State<ItemDetailPage> {
+  Color _iconColor = Colors.black;
   @override
   Widget build(BuildContext context) {
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
@@ -72,6 +76,31 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                       fontWeight: FontWeight.w800,
                       fontSize: 22,
                       color: Colors.black),
+                ),
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.only(right: 20),
+                child: Column(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _isClicked = !_isClicked;
+                          if (_isClicked) {
+                            _iconColor = Colors.red;
+                          } else {
+                            _iconColor = Colors.black;
+                          }
+                        });
+                      },
+                      icon: Icon(
+                        _isClicked ? Icons.favorite : Icons.favorite_border,
+                        color: _iconColor,
+                        size: 40,
+                      ),
+                    )
+                  ],
                 ),
               ),
               Divider(
@@ -201,6 +230,15 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                   ],
                 ),
               ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //             builder: (context) => const BookmarkPage()));
+              //   },
+              //   child: const Text('Bookmark'),
+              // ),
             ],
           ),
         ),
