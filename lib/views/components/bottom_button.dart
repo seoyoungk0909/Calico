@@ -1,4 +1,6 @@
 import 'package:clovi_template/utils/color_utils.dart';
+import 'package:clovi_template/views/home_page.dart';
+import 'package:clovi_template/views/video_page.dart';
 import 'package:flutter/material.dart';
 
 class BottomButtons extends StatelessWidget {
@@ -34,6 +36,12 @@ class BottomButtons extends StatelessWidget {
                 shape: CircleBorder())),
         ElevatedButton(
             onPressed: () {
+              if (pageController.page == 2) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => VideoPage()),
+                );
+              }
               pageController.nextPage(
                   duration: Duration(milliseconds: 500), curve: Curves.ease);
             },

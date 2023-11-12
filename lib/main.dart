@@ -1,9 +1,12 @@
+import 'package:clovi_template/provider/item_info_provider.dart';
+import 'package:clovi_template/provider/video_controller_provider.dart';
 import 'package:clovi_template/views/channel_page.dart';
 // import 'package:clovi_template/views/home_page.dart';
 import 'package:clovi_template/views/shorts_video_page.dart';
 import 'package:clovi_template/views/components/splash_screen.dart';
 import 'package:clovi_template/views/survey_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'views/video_page.dart';
 import 'views/item_detail_page.dart';
 import 'views/item_info_page.dart';
@@ -19,23 +22,29 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: CalicoColors.representBlack,
-        primaryColorLight: CalicoColors.representWhite,
-        highlightColor: CalicoColors.representOrange,
+    return ChangeNotifierProvider(
+      create: (_) => ItemInfoProvider(),
+      child: ChangeNotifierProvider(
+        create: (_) => VideoControllerProvider(),
+        child: MaterialApp(
+          theme: ThemeData(
+            primaryColor: CalicoColors.representBlack,
+            primaryColorLight: CalicoColors.representWhite,
+            highlightColor: CalicoColors.representOrange,
+          ),
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          routes: {
+            'video': (context) => VideoPage(),
+            'item_info': (context) => ItemInfoPage(),
+            'item_detail': (context) => ItemDetailPage(),
+            'shorts_video': (context) => ShortsVideoPage(),
+            'channel': (context) => ChannelPage(),
+            'survey_page': (context) => SurveyPage(),
+          },
+          home: SplashScreen(),
+        ),
       ),
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        'video': (context) => VideoPage(),
-        'item_info': (context) => ItemInfoPage(),
-        'item_detail': (context) => ItemDetailPage(),
-        'shorts_video': (context) => ShortsVideoPage(),
-        'channel': (context) => ChannelPage(),
-        'survey_page': (context) => SurveyPage(),
-      },
-      home: SplashScreen(),
     );
   }
 }

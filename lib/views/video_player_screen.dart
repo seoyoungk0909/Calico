@@ -1,8 +1,11 @@
 import 'package:clovi_template/models/video_model.dart';
+import 'package:clovi_template/provider/item_info_provider.dart';
+import 'package:clovi_template/provider/video_controller_provider.dart';
 import 'package:clovi_template/views/components/splash_screen.dart';
 import 'package:clovi_template/views/time_control_widget.dart';
 // import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
@@ -19,7 +22,7 @@ class VideoPlayerScreen extends StatefulWidget {
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   // late YoutubePlayerController ypController;
-  late YoutubePlayer player;
+  late VideoControllerProvider videoControllerProvider;
 
   // Future<void> initializeController() async {
   //   ypController = YoutubePlayerController(
@@ -34,16 +37,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   //   );
   // }
 
-  Future<void> initializePlayer() async {
-    player = YoutubePlayer(
-      controller: widget.video.ypController!,
-      showVideoProgressIndicator: true,
-    );
-  }
-
   @override
   void initState() {
     super.initState();
+    videoControllerProvider = VideoControllerProvider();
   }
 
   // @override
@@ -69,32 +66,50 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: initializePlayer(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Column(
-            children: <Widget>[
-              Expanded(
-                child: GestureDetector(
-                  onHorizontalDragEnd: (details) {
-                    if (details.velocity.pixelsPerSecond.dx < 0) {
-                      directToItemInfoPage(widget.video, 'item_info');
-                    }
-                  },
-                  child: player,
+    return Consumer<VideoControllerProvider>(
+      builder: (context, videoControllerProvider, child) {
+        return Stack(
+          children: [
+            Column(
+              children: <Widget>[
+                Expanded(
+                  child: GestureDetector(
+                    onHorizontalDragEnd: (details) {
+                      if (details.velocity.pixelsPerSecond.dx < 0) {
+                        directToItemInfoPage(widget.video, 'item_info');
+                      }
+                    },
+                    child: YoutubePlayer(
+                      controller: widget.video.ypController!,
+                      showVideoProgressIndicator: true,
+                      onReady: () {
+                        videoControllerProvider.videoReady = true;
+                        // if (widget.video.ypController!.value.isPlaying) {
+                        //   videoControllerProvider.videoReady = true;
+                        //   print("isplaying!");
+                        // }
+                      },
+                    ),
+                  ),
                 ),
-              ),
-              TimeControlWidget(
-                ypController: widget.video.ypController!,
-                video: widget.video,
-                refresh: false,
-              ),
-            ],
-          );
-        } else {
-          return splash(context);
-        }
+                ChangeNotifierProvider(
+                  create: (_) => ItemInfoProvider(),
+                  child: TimeControlWidget(
+                    ypController: widget.video.ypController!,
+                    video: widget.video,
+                    onIndexChange: (index) {
+                      // print("index changed in video widget = $index");
+                      Provider.of<ItemInfoProvider>(context, listen: false)
+                          .currentIndex = index;
+                    },
+                    // refresh: false,
+                  ),
+                ),
+              ],
+            ),
+            if (!videoControllerProvider.videoReady) splash(context)
+          ],
+        );
       },
     );
   }
