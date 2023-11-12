@@ -1,5 +1,6 @@
+import 'package:clovi_template/views/survey_page.dart';
 import 'package:flutter/material.dart';
-import 'package:clovi_template/views/home_page.dart';
+// import 'package:clovi_template/views/home_page.dart';
 import 'package:flutter_svg/svg.dart';
 
 Widget splash(BuildContext context) {
@@ -31,7 +32,7 @@ class SplashScreen extends StatelessWidget {
     Future.delayed(Duration(milliseconds: 2500), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => SurveyPage()),
       );
     });
 

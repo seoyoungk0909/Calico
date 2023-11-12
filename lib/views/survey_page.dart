@@ -2,6 +2,7 @@ import 'package:clovi_template/utils/color_utils.dart';
 import 'package:clovi_template/views/components/bottom_button.dart';
 import 'package:clovi_template/views/components/step_progress.dart';
 import 'package:clovi_template/views/components/style_chip.dart';
+import 'package:clovi_template/views/video_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -71,7 +72,7 @@ class _SurveyPageState extends State<SurveyPage> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    double fontSize = 70;
+    // double fontSize = 70;
 
     return Scaffold(
       body: Column(
@@ -89,7 +90,13 @@ class _SurveyPageState extends State<SurveyPage> {
                               style: TextStyle(
                                   fontSize: 11.5,
                                   color: Color.fromARGB(255, 194, 194, 194))),
-                          onPressed: () {})))),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => VideoPage()),
+                            );
+                          })))),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             child: StepProgress(currentStep: _currentPage, steps: 3),
