@@ -1,18 +1,22 @@
 import 'package:clovi_template/models/time_shop_items_model.dart';
+import 'package:clovi_template/provider/item_info_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../models/video_model.dart';
 
 class TimeControlWidget extends StatefulWidget {
   final YoutubePlayerController ypController;
   final Video video;
-  final bool refresh;
+  final Function(int) onIndexChange;
+  // final bool refresh;
 
   const TimeControlWidget({
     super.key,
     required this.ypController,
     required this.video,
-    required this.refresh,
+    required this.onIndexChange,
+    // required this.refresh,
   });
 
   @override
@@ -60,6 +64,7 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
     if (newIndex != itemIndex) {
       setState(() {
         itemIndex = newIndex;
+        // print("update index = $itemIndex");
       });
     }
   }
@@ -67,112 +72,122 @@ class _TimeControlWidgetState extends State<TimeControlWidget> {
   @override
   Widget build(BuildContext context) {
     updateItemIndex();
-    return Container(
-      color: Color.fromARGB(255, 239, 239, 239),
-      padding: EdgeInsets.only(bottom: 0),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // previous
-          Padding(
-            padding: EdgeInsetsDirectional.only(start: 10),
-            child: TextButton(
-              onPressed: () async {
-                await showPreviousItems();
-                widget.refresh
-                    ? (setState(() {
-                        // refreshing the page
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, 'item_info', arguments: {
-                          'controller': widget.ypController,
-                          'timeShopItems': widget.video.data?.timeShopItemLists,
-                          'model':
-                              widget.video.data!.timeShopItemLists![0].model!,
-                          'video': widget.video,
-                          'profileImgUrl': widget.video.data!.profileImgUrl,
-                        });
-                      }))
-                    : null;
-              },
-              child: Container(
-                  margin: EdgeInsetsDirectional.fromSTEB(5, 10, 5, 10),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Icon(Icons.arrow_back_ios,
-                            size: 16, color: Theme.of(context).primaryColor),
-                        Padding(
-                            padding: EdgeInsets.only(left: 10, right: 10),
-                            child: Text(
-                              '이전 옷 보기',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 16,
-                              ),
-                            ))
-                      ])),
-            ),
+
+    return Consumer<ItemInfoProvider>(
+      builder: (context, provider, child) {
+        return Container(
+          color: Color.fromARGB(255, 239, 239, 239),
+          padding: EdgeInsets.only(bottom: 0),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // previous
+              Padding(
+                padding: EdgeInsetsDirectional.only(start: 10),
+                child: TextButton(
+                  onPressed: () async {
+                    await showPreviousItems();
+                    widget.onIndexChange(itemIndex);
+                    // provider.previousIndex();
+                    // widget.refresh
+                    //     ? (setState(() {
+                    //         // refreshing the page
+                    //         Navigator.pop(context);
+                    //         Navigator.pushNamed(context, 'item_info', arguments: {
+                    //           'controller': widget.ypController,
+                    //           'timeShopItems': widget.video.data?.timeShopItemLists,
+                    //           'model':
+                    //               widget.video.data!.timeShopItemLists![0].model!,
+                    //           'video': widget.video,
+                    //           'profileImgUrl': widget.video.data!.profileImgUrl,
+                    //         });
+                    //       }))
+                    //     : null;
+                  },
+                  child: Container(
+                      margin: EdgeInsetsDirectional.fromSTEB(5, 10, 5, 10),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Icon(Icons.arrow_back_ios,
+                                size: 16,
+                                color: Theme.of(context).primaryColor),
+                            Padding(
+                                padding: EdgeInsets.only(left: 10, right: 10),
+                                child: Text(
+                                  '이전 옷 보기',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                ))
+                          ])),
+                ),
+              ),
+              // number
+              Padding(
+                padding: EdgeInsetsDirectional.only(end: 5),
+                child: Text('$itemIndex / ${timestamps.length}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black,
+                      fontSize: 17,
+                      fontStyle: FontStyle.italic,
+                    )),
+              ),
+              // next
+              Padding(
+                padding: EdgeInsetsDirectional.only(end: 10),
+                child: TextButton(
+                  onPressed: () async {
+                    await showNextItems();
+                    widget.onIndexChange(itemIndex);
+                    // provider.nextIndex();
+                    // widget.refresh
+                    //     ? (setState(() {
+                    //         Navigator.pop(context);
+                    //         Navigator.pushNamed(context, 'item_info', arguments: {
+                    //           'controller': widget.ypController,
+                    //           'timeShopItems': widget.video.data?.timeShopItemLists,
+                    //           'model':
+                    //               widget.video.data!.timeShopItemLists![0].model!,
+                    //           'video': widget.video,
+                    //           'profileImgUrl': widget.video.data!.profileImgUrl,
+                    //         });
+                    //       }))
+                    //     : null;
+                  },
+                  /* look for items*/
+                  // child: Text('다음 옷 보기'),
+                  child: Container(
+                      margin: EdgeInsetsDirectional.fromSTEB(5, 10, 5, 10),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Padding(
+                                padding: EdgeInsets.only(left: 10, right: 10),
+                                child: Text(
+                                  '다음 옷 보기',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                )),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 16,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ])),
+                ),
+              ),
+            ],
           ),
-          // number
-          Padding(
-            padding: EdgeInsetsDirectional.only(end: 5),
-            child: Text('$itemIndex / ${timestamps.length}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.normal,
-                  color: Colors.black,
-                  fontSize: 17,
-                  fontStyle: FontStyle.italic,
-                )),
-          ),
-          // next
-          Padding(
-            padding: EdgeInsetsDirectional.only(end: 10),
-            child: TextButton(
-              onPressed: () async {
-                await showNextItems();
-                widget.refresh
-                    ? (setState(() {
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, 'item_info', arguments: {
-                          'controller': widget.ypController,
-                          'timeShopItems': widget.video.data?.timeShopItemLists,
-                          'model':
-                              widget.video.data!.timeShopItemLists![0].model!,
-                          'video': widget.video,
-                          'profileImgUrl': widget.video.data!.profileImgUrl,
-                        });
-                      }))
-                    : null;
-              },
-              /* look for items*/
-              // child: Text('다음 옷 보기'),
-              child: Container(
-                  margin: EdgeInsetsDirectional.fromSTEB(5, 10, 5, 10),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.only(left: 10, right: 10),
-                            child: Text(
-                              '다음 옷 보기',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 16,
-                              ),
-                            )),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ])),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
